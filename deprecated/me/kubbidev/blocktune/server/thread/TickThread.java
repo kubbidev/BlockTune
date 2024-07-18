@@ -1,0 +1,120 @@
+package me.kubbidev.blocktune.server.thread;
+
+import me.kubbidev.blocktune.server.MinecraftServer;
+import me.kubbidev.blocktune.server.Tickable;
+import me.kubbidev.blocktune.server.instance.Chunk;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.locks.LockSupport;
+import java.util.concurrent.locks.ReentrantLock;
+
+/**
+ * Thread responsible for ticking {@link Chunk chunks}.
+ * <p>
+ * Created in {@link ThreadDispatcher}, and awaken every tick with a task to execute.
+ */
+@ApiStatus.Internal
+public final class TickThread extends BlockTuneThread {
+    private final ReentrantLock lock = new ReentrantLock();
+    private volatile boolean stop;
+
+    private CountDownLatch latch;
+    private long tickTime;
+    private long tickNum = 0;
+    private final List<ThreadDispatcher.Partition> entries = new ArrayList<>();
+
+    public TickThread(int number) {
+        super(MinecraftServer.THREAD_NAME_TICK + "-" + number);
+    }
+
+    public TickThread(@NotNull String name) {
+        super(name);
+    }
+
+    public static @Nullable TickThread current() {
+        if (Thread.currentThread() instanceof TickThread current) {
+            return current;
+        }
+        return null;
+    }
+
+    @Override
+    public void run() {
+        LockSupport.park(this);
+        while (!this.stop) {
+            this.lock.lock();
+            try {
+                tick();
+            } catch (Exception e) {
+                MinecraftServer.getExceptionManager().handleException(e);
+            }
+            this.lock.unlock();
+            this.latch.countDown();
+            LockSupport.park(this);
+        }
+    }
+
+    private void tick() {
+        ReentrantLock lock = this.lock;
+        long tickTime = this.tickTime;
+        for (ThreadDispatcher.Partition entry : this.entries) {
+            assert entry.thread() == this;
+            List<Tickable> elements = entry.elements();
+            if (elements.isEmpty()) {
+                continue;
+            }
+            for (Tickable element : elements) {
+                if (lock.hasQueuedThreads()) {
+                    lock.unlock();
+                    lock.lock();
+                }
+                try {
+                    element.tick(tickTime);
+                } catch (Throwable e) {
+                    MinecraftServer.getExceptionManager().handleException(e);
+                }
+            }
+        }
+    }
+
+    void startTick(CountDownLatch latch, long tickTime) {
+        if (this.entries.isEmpty()) {
+            // Nothing to tick
+            latch.countDown();
+            return;
+        }
+        this.latch = latch;
+        this.tickTime = tickTime;
+        this.tickNum += 1;
+        this.stop = false;
+        LockSupport.unpark(this);
+    }
+
+    public Collection<ThreadDispatcher.Partition> entries() {
+        return this.entries;
+    }
+
+    /**
+     * Gets the lock used to ensure the safety of entity acquisition.
+     *
+     * @return the thread lock
+     */
+    public @NotNull ReentrantLock lock() {
+        return this.lock;
+    }
+
+    public long getTick() {
+        return this.tickNum;
+    }
+
+    void shutdown() {
+        this.stop = true;
+        LockSupport.unpark(this);
+    }
+}

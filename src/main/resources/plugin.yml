@@ -1,0 +1,17 @@
+name: BlockTune
+version: ${pluginVersion}
+description: An experimental Minecraft plugin used in my build servers project that helps me with a few extra features, allowing me to create and manage blocks with ease.
+author: kubbidev
+website: https://kubbidev.com
+main: me.kubbidev.blocktune.BlockTune
+load: STARTUP
+
+# Depend on NexusPowered common library
+depend: [NexusPowered]
+
+# Soft depend on the placeholder api to translate texts
+softdepend: [PlaceholderAPI]
+
+# Mark the plugin as 1.13 compatible to avoid CB having to perform quite as much unnecessary
+# remapping when the plugin is loaded.
+api-version: 1.13

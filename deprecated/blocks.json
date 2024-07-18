@@ -1,0 +1,33 @@
+{
+  "blocktune:air": {
+    "id": 0,
+    "translationKey": "block.minecraft.air",
+    "defaultStateId": 0,
+    "states": {
+      "[]": {
+        "stateId": 0
+      }
+    }
+  },
+  "blocktune:paper_wall": {
+    "id": 1,
+    "translationKey": "block.blocktune.paper_wall",
+    "defaultStateId": 1,
+    "properties": {
+      "instrument": [
+        "harp"
+      ],
+      "note": [
+        "0"
+      ],
+      "powered": [
+        "true"
+      ]
+    },
+    "states": {
+      "[instrument=harp,note=0,powered=true]": {
+        "stateId": 1
+      }
+    }
+  }
+}
