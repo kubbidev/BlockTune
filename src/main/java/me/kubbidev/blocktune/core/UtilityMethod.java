@@ -391,9 +391,12 @@ public final class UtilityMethod {
         boolean isSwinging = false;
         boolean isBlocking;
 
+        // scale damage on caster strength effect amplifier
+        damage *= 1.0 + ((double) getPotionAmplifier(caster, PotionEffectType.STRENGTH) / 3);
+
         for (Entity victim : getNearbyChunkEntities(location).stream()
-                .filter(e -> e.getLocation().distanceSquared(location) <= (radius * radius))
                 .filter(e -> !e.equals(caster))
+                .filter(e -> e.getLocation().distanceSquared(location) <= (radius * radius))
                 .toList()) {
 
             if (canTarget(meta.plugin(), caster, victim)) {
@@ -413,33 +416,33 @@ public final class UtilityMethod {
                 }
 
 //                if (redSwordEnchantment && target.isDemon() && isNotTanjiroDemon) {
-//                    modifiedDamage *= 1.0 + (redSwordLevel * 0.125);
+//                    d *= 1.0 + (redSwordLevel * 0.125);
 //                    // maybe in the future apply red sword effect instance
 //                }
 
 //                double armorValue = getAttributeValue(target, Attribute.GENERIC_ARMOR);
 //                if (!(target instanceof Player) || (((Player) target).hasDoneTrainingArcSerpent() && Math.random() < 0.3)) {
-//                    modifiedDamage *= 1.0 - Math.max((armorValue - modifiedDamage * 0.5) * 0.04, armorValue * 0.008);
+//                    d *= 1.0 - Math.max((armorValue - d * 0.5) * 0.04, armorValue * 0.008);
 //                }
 
 //                if (target instanceof Player && ((Player) target).hasDoneTrainingArcStone()) {
-//                    modifiedDamage *= 0.9;
+//                    d *= 0.9;
 //                }
 
 //                if (target.hasPotionEffect(PotionEffectType.DEMON_SLAYER_MARK)) {
-//                    modifiedDamage *= 0.9;
+//                    d *= 0.9;
 //                }
 
 //                if (target instanceof Player) {
 //                    switch (target.getWorld().getDifficulty()) {
 //                        case HARD:
-//                            f *= 1.0;
+//                            d *= 1.0;
 //                            break;
 //                        case NORMAL:
-//                            f *= 0.75;
+//                            d *= 0.75;
 //                            break;
 //                        default:
-//                            f *= 0.5;
+//                            d *= 0.5;
 //                            break;
 //                    }
 //                }
@@ -564,23 +567,30 @@ public final class UtilityMethod {
             y = y / disManhattan * 3.0;
             z = z / disManhattan * 3.0;
         }
-        Location loc = entity.getLocation();
-        // if the entity is airborne and not near solid blocks,
-        // ensure it does not gain upward velocity
-        if (!entity.isOnGround() &&
-                !loc.getWorld().getBlockAt(loc.getBlockX() + 1, loc.getBlockY(), loc.getBlockZ()).isSolid() &&
-                !loc.getWorld().getBlockAt(loc.getBlockX() - 1, loc.getBlockY(), loc.getBlockZ()).isSolid() &&
-                !loc.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ() + 1).isSolid() &&
-                !loc.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ() - 1).isSolid()) {
 
+        if (!isEntityNearGround(entity)) {
             y = Math.min(y, 0.0);
         }
 
-        double s = (double) Math.min(getPotionAmplifier(entity, PotionEffectType.STRENGTH), 9) / 40;
         // adjust the velocity based on the entity's strength potion effect
-        x *= (0.75 + s);
-        y *= (0.75 + s);
-        z *= (0.75 + s);
+        double s = 0.75 + (double) Math.min(getPotionAmplifier(entity, PotionEffectType.STRENGTH), 9) / 40;
+//        if (entity.hasSlayerMark()) {
+//            s += 0.25;
+//        }
+        x *= s;
+        y *= s;
+        z *= s;
         return new Vector(x, y, z);
+    }
+
+    public static boolean isEntityNearGround(LivingEntity entity) {
+        Location loc = entity.getLocation();
+        // if the entity is airborne and not near solid blocks,
+        // ensure it does not gain upward velocity
+        return entity.isOnGround() ||
+                loc.getWorld().getBlockAt(loc.getBlockX() + 1, loc.getBlockY(), loc.getBlockZ()).isSolid() ||
+                loc.getWorld().getBlockAt(loc.getBlockX() - 1, loc.getBlockY(), loc.getBlockZ()).isSolid() ||
+                loc.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ() + 1).isSolid() ||
+                loc.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ() - 1).isSolid();
     }
 }
