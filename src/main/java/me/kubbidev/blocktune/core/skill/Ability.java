@@ -13,7 +13,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public enum Ability {
     DANCE(new Dance(), ImmutableMap.<String, Double>builder()
-            .put("damage", 4.0)
+            .put("damage", 24.0)
             .put("radius", 3.0)
             .put("knockback", 1.0)
             .put("repulsion", 1.0)
@@ -21,7 +21,7 @@ public enum Ability {
             .build()),
 
     CLEAR_BLUE_SKY(new ClearBlueSky(), ImmutableMap.<String, Double>builder()
-            .put("damage", 6.0)
+            .put("damage", 36.0)
             .put("radius", 3.0)
             .put("knockback", 1.0)
             .put("repulsion", 1.0)
@@ -29,7 +29,7 @@ public enum Ability {
             .build()),
 
     RAGING_SUN(new RagingSun(), ImmutableMap.<String, Double>builder()
-            .put("damage", 4.5)
+            .put("damage", 27.0)
             .put("radius", 3.0)
             .put("knockback", 1.0)
             .put("repulsion", 1.0)
@@ -37,7 +37,7 @@ public enum Ability {
             .build()),
 
     BURNING_BONES_SUMMER_SUN(new BurningBonesSummerSun(), ImmutableMap.<String, Double>builder()
-            .put("damage", 4.0)
+            .put("damage", 24.0)
             .put("radius", 3.0)
             .put("knockback", 1.5)
             .put("repulsion", 2.0)
@@ -45,7 +45,7 @@ public enum Ability {
             .build()),
 
     SETTING_SUN_TRANSFORMATION(new SettingSunTransformation(), ImmutableMap.<String, Double>builder()
-            .put("damage", 5.0)
+            .put("damage", 30.0)
             .put("radius", 4.0)
             .put("knockback", 0.75)
             .put("repulsion", 1.0)
@@ -53,15 +53,23 @@ public enum Ability {
             .build()),
 
     SOLAR_HEAT_HAZE(new SolarHeatHaze(), ImmutableMap.<String, Double>builder()
-            .put("damage", 4.5)
+            .put("damage", 27.0)
             .put("radius", 3.0)
             .put("knockback", 1.0)
             .put("repulsion", 1.0)
             .put("cooldown", 4.0)
             .build()),
 
+    BENEFICENT_RADIANCE(new BeneficentRadiance(), ImmutableMap.<String, Double>builder()
+            .put("damage", 24.0)
+            .put("radius", 4.0)
+            .put("knockback", 1.5)
+            .put("repulsion", 2.0)
+            .put("cooldown", 5.0)
+            .build()),
+
     SUN_HALO_DRAGON_HEAD_DANCE(new SunHaloDragonHeadDance(), ImmutableMap.<String, Double>builder()
-            .put("damage", 4.5)
+            .put("damage", 27.0)
             .put("radius", 4.0)
             .put("knockback", 1.0)
             .put("repulsion", 1.0)

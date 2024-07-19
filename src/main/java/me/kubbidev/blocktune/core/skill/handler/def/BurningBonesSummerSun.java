@@ -48,9 +48,9 @@ public class BurningBonesSummerSun extends SkillHandler<SimpleSkillResult> {
                 }
                 Location location = caster.getLocation();
                 if (t == Math.PI / 2.0) {
-                    caster.getWorld().playSound(location, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.5f, 1.0f);
+                    caster.getWorld().playSound(caster, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.5f, 1.0f);
                 }
-                caster.getWorld().playSound(location, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.0f);
+                caster.getWorld().playSound(caster, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.0f);
                 caster.swingMainHand();
 
                 Vector currentVelocity = caster.getVelocity();
@@ -80,7 +80,7 @@ public class BurningBonesSummerSun extends SkillHandler<SimpleSkillResult> {
                             .offset(0.1, 0.1, 0.1).spawn();
 
                     Particle.FLAME.builder().location(displayLoc)
-                            .count(4).offset(0.25, 0.25, 0.25).extra(0.1).spawn();
+                            .count(4).offset(0.2, 0.2, 0.2).extra(0.1).spawn();
 
                     Particle.SWEEP_ATTACK.builder().location(displayLoc)
                             .extra(0.01).spawn();

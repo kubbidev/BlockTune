@@ -56,7 +56,7 @@ public class AttackActionListener implements Listener {
         Player player = e.getPlayer();
 
         if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
-                && e.getMaterial() == Material.STICK
+                && e.getMaterial() == Material.IRON_SWORD
                 && e.getHand() == EquipmentSlot.HAND
                 // avoid spectators to cast skills (bug when they can click on a block)
                 && player.getGameMode() != GameMode.SPECTATOR) {
@@ -79,7 +79,7 @@ public class AttackActionListener implements Listener {
     public void changePerformingAttack(PlayerDropItemEvent e) {
         Player player = e.getPlayer();
 
-        if (e.getItemDrop().getItemStack().getType() == Material.STICK) {
+        if (e.getItemDrop().getItemStack().getType() == Material.IRON_SWORD) {
             e.setCancelled(true);
         } else {
             return;

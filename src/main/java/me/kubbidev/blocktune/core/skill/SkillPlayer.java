@@ -38,6 +38,7 @@ public class SkillPlayer extends BukkitRunnable {
             .add(Ability.BURNING_BONES_SUMMER_SUN)
             .add(Ability.SETTING_SUN_TRANSFORMATION)
             .add(Ability.SOLAR_HEAT_HAZE)
+            .add(Ability.BENEFICENT_RADIANCE)
             .add(Ability.SUN_HALO_DRAGON_HEAD_DANCE)
             .build();
 
