@@ -51,8 +51,8 @@ public class Dance extends SkillHandler<SimpleSkillResult> {
                 if (location == null) {
                     location = caster.getLocation();
 
-                    caster.getWorld().playSound(location, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.5f, 1.f);
-                    caster.getWorld().playSound(location, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.f);
+                    location.getWorld().playSound(location, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.5f, 1.f);
+                    location.getWorld().playSound(location, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.f);
                     caster.swingMainHand();
                 }
 

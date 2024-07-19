@@ -51,7 +51,6 @@ public class ClearBlueSky extends SkillHandler<SimpleSkillResult> {
                     cancel();
                     return;
                 }
-                World world = caster.getWorld();
 
                 // disable fall damage during the casting
                 caster.setFallDistance(0.0f);
@@ -62,8 +61,8 @@ public class ClearBlueSky extends SkillHandler<SimpleSkillResult> {
                     if (location == null) {
                         location = caster.getLocation();
                     }
-                    world.playSound(location, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.f);
-                    world.playSound(location, "minecraft:custom.generic.sword_sweep", 0.2f, 1.f);
+                    location.getWorld().playSound(location, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.f);
+                    location.getWorld().playSound(location, "minecraft:custom.generic.sword_sweep", 0.2f, 1.f);
 
                     for (int layer = 0; layer < 3; layer++) {
                         double layerRadius = 2.5 + layer * 0.33;
@@ -97,8 +96,8 @@ public class ClearBlueSky extends SkillHandler<SimpleSkillResult> {
                     caster.setVelocity(new Vector(currentVelocity.getX(), Math.max(currentVelocity.getY(), 0.0), currentVelocity.getZ()));
 
                     if (theta == Math.PI / 2) {
-                        world.playSound(location, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.5f, 1.f);
-                        world.playSound(location, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.f);
+                        location.getWorld().playSound(location, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.5f, 1.f);
+                        location.getWorld().playSound(location, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.f);
                         caster.swingMainHand();
                     }
 

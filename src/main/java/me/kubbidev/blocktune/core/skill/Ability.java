@@ -68,6 +68,14 @@ public enum Ability {
             .put("cooldown", 5.0)
             .build()),
 
+    SUNFLOWER_THRUST(new SunflowerThrust(), ImmutableMap.<String, Double>builder()
+            .put("damage", 30.0)
+            .put("radius", 3.0)
+            .put("knockback", 2.0)
+            .put("repulsion", 1.0)
+            .put("cooldown", 5.0)
+            .build()),
+
     SUN_HALO_DRAGON_HEAD_DANCE(new SunHaloDragonHeadDance(), ImmutableMap.<String, Double>builder()
             .put("damage", 27.0)
             .put("radius", 4.0)

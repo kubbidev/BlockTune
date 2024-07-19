@@ -65,8 +65,8 @@ public class SettingSunTransformation extends SkillHandler<SimpleSkillResult> {
                         if (location == null) {
                             location = EntityBody.BODY.getLocation(caster);
                         }
-                        caster.getWorld().playSound(location, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.5f, 1.0f);
-                        caster.getWorld().playSound(location, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.0f);
+                        location.getWorld().playSound(location, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.5f, 1.0f);
+                        location.getWorld().playSound(location, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.0f);
                         caster.swingMainHand();
                     }
 

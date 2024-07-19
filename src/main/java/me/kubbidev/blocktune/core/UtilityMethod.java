@@ -457,8 +457,8 @@ public final class UtilityMethod {
 
                     if (isBlocking) {
                         intelligentHandsSwing(target);
-                        target.getWorld().playSound(target, "minecraft:custom.generic.sword_guard", 0.5f, 1.0f);
-                        target.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, target.getEyeLocation(),
+                        location.getWorld().playSound(target, "minecraft:custom.generic.sword_guard", 0.5f, 1.0f);
+                        location.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, target.getEyeLocation(),
                                 5, 0.5, 0.5, 0.5, 0.5);
                     }
                     if (isKnockback) {
