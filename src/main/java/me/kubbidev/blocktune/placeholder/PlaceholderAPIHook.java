@@ -5,22 +5,15 @@ import me.kubbidev.blocktune.BlockTune;
 import me.kubbidev.blocktune.scoreboard.ScoreboardTemplate;
 import me.kubbidev.blocktune.scoreboard.ScoreboardAnimation;
 import me.kubbidev.nexuspowered.Schedulers;
-import me.kubbidev.nexuspowered.util.Players;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 /**
  * A placeholder that just passes on to {@link me.clip.placeholderapi.PlaceholderAPI} to do all the parsing.
  */
 public final class PlaceholderAPIHook extends PlaceholderExpansion implements Runnable {
     public static final PlaceholderAPIHook INSTANCE = new PlaceholderAPIHook();
-
-    // constant variable used on request to parse time to a more human readable way
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     // cached server address animation currently being animated
     private final ScoreboardAnimation<String> serverAddress;
@@ -52,10 +45,14 @@ public final class PlaceholderAPIHook extends PlaceholderExpansion implements Ru
     }
 
     @Override
+    public boolean persist() {
+        return true;
+    }
+
+    @SuppressWarnings("SwitchStatementWithTooFewBranches")
+    @Override
     public @Nullable String onPlaceholderRequest(@Nullable Player player, @NotNull String params) {
         return switch (params) {
-            case "system_date" -> DATE_FORMATTER.format(LocalDate.now());
-            case "server_online" -> String.valueOf(Players.all().size());
             case "server_address" -> getServerAddressCurrentFrame();
             default -> {
                 if (player == null) yield null;
@@ -63,11 +60,7 @@ public final class PlaceholderAPIHook extends PlaceholderExpansion implements Ru
                     store variables to avoid reuse, this method needs a lot of optimization
                     cause it may be call more than 20 times per seconds for each players on the server
                 */
-                yield switch (params) {
-                    case "player_world" -> player.getWorld().getName();
-                    case "player_ping" -> String.valueOf(player.getPing());
-                    default -> null;
-                };
+                yield null;
             }
         };
     }

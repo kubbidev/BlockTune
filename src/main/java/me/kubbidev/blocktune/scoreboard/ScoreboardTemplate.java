@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("SpellCheckingInspection")
 public class ScoreboardTemplate {
     public static final String[] SERVER_ADDRESS = {
+            "<gold>kubbidev.com</gold>",
             "<gold><yellow>k</yellow>ubbidev.com</gold>",
             "<gold><yellow><white>k</white>u</yellow>bbidev.com</gold>",
             "<gold><yellow>k<white>u</white>b</yellow>bidev.com</gold>",
@@ -20,16 +21,7 @@ public class ScoreboardTemplate {
             "<gold>kubbidev.<yellow>c<white>o</white></yellow>m</gold>",
             "<gold>kubbidev.c<yellow>o<white>m</white></yellow></gold>",
             "<gold>kubbidev.co<yellow>m</yellow></gold>",
-            "<gold>kubbidev.com</gold>",
-            "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>",
-            "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>",
-            "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>",
-            "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>",
-            "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>",
-            "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>",
-            "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>",
-            "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>",
-            "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>", "<gold>kubbidev.com</gold>"
+            "<gold>kubbidev.com</gold>"
     };
 
     private final String[] lines;
@@ -41,13 +33,19 @@ public class ScoreboardTemplate {
     public ScoreboardTemplate() {
         this.title = "<red><bold>BLOCKTUNE</bold></red>";
         this.lines = new String[]{
-                "<gray>%blocktune_system_date%</gray>",
+                "<gray>%server_time_dd/MM/yyyy%</gray>",
                 "",
                 "<red><bold>INFOS</bold></red>",
-                " <dark_gray>\u2503</dark_gray> Instance : <aqua>%blocktune_player_world%</aqua>",
+                " <dark_gray>\u2503</dark_gray> Instance : <aqua>%player_world%</aqua>",
+                " <dark_gray>\u2503</dark_gray> x : <yellow>%player_x%</yellow>",
+                " <dark_gray>\u2503</dark_gray> y : <yellow>%player_y%</yellow>",
+                " <dark_gray>\u2503</dark_gray> z : <yellow>%player_z%</yellow>",
+                " <dark_gray>\u2503</dark_gray> Biome : <green>%player_biome_capitalized%</green>",
                 "",
-                "<red><bold>SERVEUR</bold></red>",
-                " <dark_gray>\u2503</dark_gray> Connectés : <green>%blocktune_server_online%</green>",
+                "<red><bold>SERVER</bold></red>",
+                " <dark_gray>\u2503</dark_gray> Ram : <gold>%server_ram_used%</gold>/<gold>%server_ram_max%</gold>",
+                " <dark_gray>\u2503</dark_gray> TPS : <green>%server_tps_1%</green>",
+                " <dark_gray>\u2503</dark_gray> Online : <green>%server_online%</green>",
                 "",
                 "%blocktune_server_address%",
         };
@@ -55,7 +53,7 @@ public class ScoreboardTemplate {
                 "<dark_gray>\u00BB <red><bold>BLOCKTUNE</bold></red> \u00AB</dark_gray>",
                 "%blocktune_server_address%",
                 "",
-                "Ping: <green>%blocktune_player_ping%ms</green>   Connectés: <green>%blocktune_server_online%</green>",
+                "Ping: <green>%player_ping%ms</green>   Connectés: <green>%server_online%</green>",
                 ""
         );
         this.footer = Text.joinNewline("",
