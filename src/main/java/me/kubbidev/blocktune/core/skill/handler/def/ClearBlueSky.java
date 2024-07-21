@@ -3,13 +3,12 @@ package me.kubbidev.blocktune.core.skill.handler.def;
 import me.kubbidev.blocktune.core.UtilityMethod;
 import me.kubbidev.blocktune.core.damage.DamageType;
 import me.kubbidev.blocktune.core.damage.Element;
-import me.kubbidev.blocktune.core.entity.EntityMetadataProvider;
 import me.kubbidev.blocktune.core.skill.SkillMetadata;
 import me.kubbidev.blocktune.core.skill.handler.SkillHandler;
+import me.kubbidev.blocktune.core.skill.handler.SkillHandlerRunnable;
 import me.kubbidev.blocktune.core.skill.result.def.SimpleSkillResult;
 import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -25,18 +24,13 @@ public class ClearBlueSky extends SkillHandler<SimpleSkillResult> {
     @Override
     public void whenCast(SimpleSkillResult result, SkillMetadata meta) {
         LivingEntity caster = meta.entity();
-        // attach this handler as casting in the entity metadata map instance
-        EntityMetadataProvider.onCastStart(caster, this);
 
-        if (caster.getVelocity().getY() >= -0.5) {
-            caster.setVelocity(caster.getVelocity().setY(1.2));
-        }
         double damage = meta.parameter("damage");
         double radius = meta.parameter("radius");
 
         double knockback = meta.parameter("knockback");
         double repulsion = meta.parameter("repulsion");
-        new BukkitRunnable() {
+        new SkillHandlerRunnable() {
             Location location = null;
             int t1 = 0;
             int t2 = 0;
@@ -44,17 +38,12 @@ public class ClearBlueSky extends SkillHandler<SimpleSkillResult> {
             double theta = 0.0;
 
             @Override
-            public void run() {
-                if (!caster.isValid() || ((t1++ >= 40 && t2 == 0) || theta >= Math.PI * 10.0)) {
-                    // remove this handler from casting in the caster metadata map instance
-                    EntityMetadataProvider.onCastEnd(caster, ClearBlueSky.this);
-                    cancel();
-                    return;
-                }
+            public boolean shouldCancel() {
+                return !caster.isValid() || ((t1++ >= 40 && t2 == 0) || theta >= Math.PI * 2);
+            }
 
-                // disable fall damage during the casting
-                caster.setFallDistance(0.0f);
-
+            @Override
+            protected void tick() {
                 if (t2 == 0 && (t1 > 20 || caster.getVelocity().getY() <= 0.2)) {
                     t2 = 1;
 
@@ -136,6 +125,18 @@ public class ClearBlueSky extends SkillHandler<SimpleSkillResult> {
                     }
                 }
             }
-        }.runTaskTimer(meta.plugin(), 0, 1);
+
+            @Override
+            protected void onStart() {
+                if (caster.getVelocity().getY() >= -0.5) {
+                    caster.setVelocity(caster.getVelocity().setY(1.2));
+                }
+            }
+
+            @Override
+            protected void onEnd() {
+
+            }
+        }.runTask(meta);
     }
 }

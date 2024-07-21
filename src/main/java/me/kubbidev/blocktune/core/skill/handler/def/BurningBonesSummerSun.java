@@ -3,16 +3,15 @@ package me.kubbidev.blocktune.core.skill.handler.def;
 import me.kubbidev.blocktune.core.UtilityMethod;
 import me.kubbidev.blocktune.core.damage.DamageType;
 import me.kubbidev.blocktune.core.damage.Element;
-import me.kubbidev.blocktune.core.entity.EntityMetadataProvider;
 import me.kubbidev.blocktune.core.skill.SkillMetadata;
 import me.kubbidev.blocktune.core.skill.handler.SkillHandler;
+import me.kubbidev.blocktune.core.skill.handler.SkillHandlerRunnable;
 import me.kubbidev.blocktune.core.skill.result.def.SimpleSkillResult;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -27,29 +26,23 @@ public class BurningBonesSummerSun extends SkillHandler<SimpleSkillResult> {
     @Override
     public void whenCast(SimpleSkillResult result, SkillMetadata meta) {
         LivingEntity caster = meta.entity();
-        // attach this handler as casting in the entity metadata map instance
-        EntityMetadataProvider.onCastStart(caster, this);
 
         double damage = meta.parameter("damage");
         double radius = meta.parameter("radius");
 
         double knockback = meta.parameter("knockback");
         double repulsion = meta.parameter("repulsion");
-        new BukkitRunnable() {
+        new SkillHandlerRunnable() {
             double t = 0.0;
 
             @Override
-            public void run() {
-                if (!caster.isValid() || (t += Math.PI / 2.0) >= Math.PI * 8.0) {
-                    // remove this handler from casting in the caster metadata map instance
-                    EntityMetadataProvider.onCastEnd(caster, BurningBonesSummerSun.this);
-                    cancel();
-                    return;
-                }
+            public boolean shouldCancel() {
+                return !caster.isValid() || (t += Math.PI / 2.0) >= Math.PI * 8.0;
+            }
+
+            @Override
+            protected void tick() {
                 Location location = caster.getLocation();
-                if (t == Math.PI / 2.0) {
-                    caster.getWorld().playSound(caster, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.5f, 1.0f);
-                }
                 caster.getWorld().playSound(caster, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.0f);
                 caster.swingMainHand();
 
@@ -89,6 +82,16 @@ public class BurningBonesSummerSun extends SkillHandler<SimpleSkillResult> {
                             .count(2).offset(0.5, 0.5, 0.5).spawn();
                 }
             }
-        }.runTaskTimer(meta.plugin(), 0, 1);
+
+            @Override
+            protected void onStart() {
+                caster.getWorld().playSound(caster, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.5f, 1.0f);
+            }
+
+            @Override
+            protected void onEnd() {
+
+            }
+        }.runTask(meta);
     }
 }

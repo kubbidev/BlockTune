@@ -2,6 +2,7 @@ package me.kubbidev.blocktune.core.entity;
 
 import com.google.common.reflect.TypeToken;
 import me.kubbidev.blocktune.core.entity.skillmod.SkillModifierMap;
+import me.kubbidev.blocktune.core.skill.SkillMetadata;
 import me.kubbidev.blocktune.core.skill.handler.SkillHandler;
 import me.kubbidev.nexuspowered.cooldown.CooldownMap;
 import me.kubbidev.nexuspowered.metadata.Metadata;
@@ -65,15 +66,15 @@ public final class EntityMetadataProvider {
         return Metadata.provide(entity).getOrPut(CURRENTLY_CASTED, ArrayList::new);
     }
 
-    public static void onCastStart(LivingEntity entity, SkillHandler<?> handler) {
+    public static void onCastStart(SkillMetadata meta) {
         synchronized (CURRENTLY_CASTED) {
-            retrieveCurrentlyCasted(entity).add(handler.getId());
+            retrieveCurrentlyCasted(meta.entity()).add(meta.cast().getHandler().getId());
         }
     }
 
-    public static void onCastEnd(LivingEntity entity, SkillHandler<?> handler) {
+    public static void onCastEnd(SkillMetadata meta) {
         synchronized (CURRENTLY_CASTED) {
-            retrieveCurrentlyCasted(entity).remove(handler.getId());
+            retrieveCurrentlyCasted(meta.entity()).remove(meta.cast().getHandler().getId());
         }
     }
 

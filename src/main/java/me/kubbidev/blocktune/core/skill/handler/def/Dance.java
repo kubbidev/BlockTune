@@ -3,15 +3,14 @@ package me.kubbidev.blocktune.core.skill.handler.def;
 import me.kubbidev.blocktune.core.UtilityMethod;
 import me.kubbidev.blocktune.core.damage.DamageType;
 import me.kubbidev.blocktune.core.damage.Element;
-import me.kubbidev.blocktune.core.entity.EntityMetadataProvider;
 import me.kubbidev.blocktune.core.skill.SkillMetadata;
 import me.kubbidev.blocktune.core.skill.handler.SkillHandler;
+import me.kubbidev.blocktune.core.skill.handler.SkillHandlerRunnable;
 import me.kubbidev.blocktune.core.skill.result.def.SimpleSkillResult;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -27,35 +26,24 @@ public class Dance extends SkillHandler<SimpleSkillResult> {
     @Override
     public void whenCast(SimpleSkillResult result, SkillMetadata meta) {
         LivingEntity caster = meta.entity();
-        // attach this handler as casting in the entity metadata map instance
-        EntityMetadataProvider.onCastStart(caster, this);
 
         double damage = meta.parameter("damage");
         double radius = meta.parameter("radius");
 
         double knockback = meta.parameter("knockback");
         double repulsion = meta.parameter("repulsion");
-        new BukkitRunnable() {
+        new SkillHandlerRunnable() {
             Location location = null;
 
             double t = 0.0;
 
             @Override
-            public void run() {
-                if (!caster.isValid() || (t += Math.PI / 4.0) > (5.0 * Math.PI / 4.0)) {
-                    // remove this handler from casting in the caster metadata map instance
-                    EntityMetadataProvider.onCastEnd(caster, Dance.this);
-                    cancel();
-                    return;
-                }
-                if (location == null) {
-                    location = caster.getLocation();
+            public boolean shouldCancel() {
+                return !caster.isValid() || (t += Math.PI / 4.0) > (5.0 * Math.PI / 4.0);
+            }
 
-                    location.getWorld().playSound(location, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.5f, 1.f);
-                    location.getWorld().playSound(location, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.f);
-                    caster.swingMainHand();
-                }
-
+            @Override
+            protected void tick() {
                 for (int layer = 0; layer < 4; layer++) {
                     double layerRadius = 3.0 + layer * 0.33;
 
@@ -88,8 +76,20 @@ public class Dance extends SkillHandler<SimpleSkillResult> {
                                 .count(2).offset(0.05, 0.05, 0.05).spawn();
                     }
                 }
+            }
+
+            @Override
+            protected void onStart() {
+                location = caster.getLocation();
+                location.getWorld().playSound(location, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.5f, 1.f);
+                location.getWorld().playSound(location, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.f);
+                caster.swingMainHand();
+            }
+
+            @Override
+            protected void onEnd() {
 
             }
-        }.runTaskTimer(meta.plugin(), 0, 1);
+        }.runTask(meta);
     }
 }

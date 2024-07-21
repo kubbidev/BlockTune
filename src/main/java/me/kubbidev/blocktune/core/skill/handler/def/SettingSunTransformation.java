@@ -3,16 +3,16 @@ package me.kubbidev.blocktune.core.skill.handler.def;
 import me.kubbidev.blocktune.core.UtilityMethod;
 import me.kubbidev.blocktune.core.damage.DamageType;
 import me.kubbidev.blocktune.core.damage.Element;
-import me.kubbidev.blocktune.core.entity.EntityMetadataProvider;
 import me.kubbidev.blocktune.core.skill.SkillMetadata;
 import me.kubbidev.blocktune.core.skill.handler.SkillHandler;
+import me.kubbidev.blocktune.core.skill.handler.SkillHandlerRunnable;
 import me.kubbidev.blocktune.core.skill.result.def.SimpleSkillResult;
 import me.kubbidev.blocktune.core.util.EntityBody;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -27,41 +27,29 @@ public class SettingSunTransformation extends SkillHandler<SimpleSkillResult> {
     @Override
     public void whenCast(SimpleSkillResult result, SkillMetadata meta) {
         LivingEntity caster = meta.entity();
-        // attach this handler as casting in the entity metadata map instance
-        EntityMetadataProvider.onCastStart(caster, this);
 
-        if (caster.getVelocity().getY() >= -0.5) {
-            caster.setVelocity(caster.getVelocity().setY(1.0));
-        }
         double damage = meta.parameter("damage");
         double radius = meta.parameter("radius");
 
         double knockback = meta.parameter("knockback");
         double repulsion = meta.parameter("repulsion");
-        new BukkitRunnable() {
+        new SkillHandlerRunnable() {
             Location location = null;
 
-            double theta = 0.0;
+            double t = 0.0;
 
             @Override
-            public void run() {
-                if (!caster.isValid() || (theta += Math.PI / 2) > 5 * Math.PI / 2) {
-                    // remove this handler from casting in the caster metadata map instance
-                    EntityMetadataProvider.onCastEnd(caster, SettingSunTransformation.this);
-                    cancel();
-                    return;
-                }
+            public boolean shouldCancel() {
+                return !caster.isValid() || (t += Math.PI / 2) > 5 * Math.PI / 2;
+            }
 
-                if (theta == Math.PI) {
-                    Particle.CLOUD.builder().location(caster.getLocation())
-                            .count(15).extra(0.2).spawn();
-                }
-
-                if (theta > 3 * Math.PI / 2) {
+            @Override
+            protected void tick() {
+                if (t > 3 * Math.PI / 2) {
                     if (caster.getVelocity().getY() > 0.2) {
                         caster.setVelocity(caster.getVelocity().setY(0.0));
                     }
-                    if (theta == Math.PI * 2) {
+                    if (t == Math.PI * 2) {
                         if (location == null) {
                             location = EntityBody.BODY.getLocation(caster);
                         }
@@ -71,11 +59,11 @@ public class SettingSunTransformation extends SkillHandler<SimpleSkillResult> {
                     }
 
                     for (int layer = 0; layer < 4; layer++) {
-                        double layerRadius = 2.5 + layer * 0.66;
+                        double layerRadius = 3.0 + layer * 0.66;
 
                         for (double i = 0; i <= Math.PI / 2; i += Math.PI / 24) {
-                            double x = Math.cos(i + theta) * layerRadius;
-                            double y = Math.sin(i + theta) * layerRadius;
+                            double x = Math.cos(i + t) * layerRadius;
+                            double y = Math.sin(i + t) * layerRadius;
 
                             Vector rotated = new Vector(x, y, 0.0)
                                     .rotateAroundX(Math.toRadians(location.getPitch() + 90.f))
@@ -91,16 +79,36 @@ public class SettingSunTransformation extends SkillHandler<SimpleSkillResult> {
                                     DamageType.SKILL
                             );
 
-                            Particle.FLAME.builder().location(displayLoc)
-                                    .count(4).offset(0.1, 0.1, 0.1).extra(0.02).spawn();
+                            if (layer == 2) {
+                                Particle.DUST.builder().location(displayLoc).color(Color.RED, 2.f)
+                                        .count(2).offset(0.1, 0.1, 0.1).spawn();
+                            } else {
+                                Particle.FLAME.builder().location(displayLoc)
+                                        .count(8).offset(0.1, 0.1, 0.1).extra(0.02).spawn();
 
-                            Particle.INSTANT_EFFECT.builder().location(displayLoc)
-                                    .offset(0.2, 0.2, 0.2).spawn();
+                                Particle.INSTANT_EFFECT.builder().location(displayLoc)
+                                        .count(2).offset(0.2, 0.2, 0.2).spawn();
+                            }
 
                         }
                     }
                 }
             }
-        }.runTaskTimer(meta.plugin(), 0, 1);
+
+            @Override
+            protected void onStart() {
+                if (caster.getVelocity().getY() >= -0.5) {
+                    caster.setVelocity(caster.getVelocity().setY(1.0));
+                }
+
+                Particle.CLOUD.builder().location(caster.getLocation())
+                        .count(15).extra(0.2).spawn();
+            }
+
+            @Override
+            protected void onEnd() {
+
+            }
+        }.runTask(meta);
     }
 }

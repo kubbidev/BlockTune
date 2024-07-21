@@ -4,18 +4,15 @@ import lombok.Getter;
 import me.kubbidev.blocktune.core.event.LivingEntityEvent;
 import me.kubbidev.blocktune.core.skill.Skill;
 import me.kubbidev.blocktune.core.skill.SkillMetadata;
-import me.kubbidev.blocktune.core.skill.result.SkillResult;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
 public abstract class SkillEvent extends LivingEntityEvent {
     private final SkillMetadata skillMeta;
-    private final SkillResult result;
 
-    public SkillEvent(SkillMetadata skillMeta, SkillResult result) {
+    public SkillEvent(SkillMetadata skillMeta) {
         super(skillMeta.entity());
         this.skillMeta = skillMeta;
-        this.result = result;
     }
 
     @NotNull

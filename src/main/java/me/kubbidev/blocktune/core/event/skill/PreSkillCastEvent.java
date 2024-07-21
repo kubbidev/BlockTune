@@ -1,11 +1,13 @@
 package me.kubbidev.blocktune.core.event.skill;
 
+import lombok.Getter;
 import me.kubbidev.blocktune.core.skill.SkillMetadata;
 import me.kubbidev.blocktune.core.skill.result.SkillResult;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+@Getter
 public class PreSkillCastEvent extends SkillEvent implements Cancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
@@ -13,6 +15,7 @@ public class PreSkillCastEvent extends SkillEvent implements Cancellable {
         return HANDLER_LIST;
     }
 
+    private final SkillResult result;
     protected boolean cancelled;
 
     /**
@@ -23,7 +26,8 @@ public class PreSkillCastEvent extends SkillEvent implements Cancellable {
      * @param result    The skill result.
      */
     public PreSkillCastEvent(SkillMetadata skillMeta, SkillResult result) {
-        super(skillMeta, result);
+        super(skillMeta);
+        this.result = result;
     }
 
     @Override

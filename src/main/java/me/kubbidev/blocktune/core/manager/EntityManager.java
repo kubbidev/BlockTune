@@ -9,6 +9,7 @@ import me.kubbidev.blocktune.core.interaction.InteractionRules;
 import me.kubbidev.blocktune.core.interaction.InteractionType;
 import me.kubbidev.blocktune.core.interaction.relation.Relationship;
 import me.kubbidev.blocktune.core.interaction.relation.RelationshipHandler;
+import org.bukkit.GameMode;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -86,6 +87,10 @@ public final class EntityManager {
         InteractionRules rules = this.plugin.getConfiguration().get(ConfigKeys.INTERACTION_RULES);
         // pvp interaction rules
         if (target instanceof Player) {
+            if (((Player) target).getGameMode() == GameMode.SPECTATOR) {
+                return false;
+            }
+
             boolean pvpEnabled = target.getWorld().getPVP();
             if (pvpEnabled) {
                 pvpEnabled = new DamageCheckEvent(source, target, type).callEvent();

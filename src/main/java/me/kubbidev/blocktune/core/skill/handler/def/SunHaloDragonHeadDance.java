@@ -3,16 +3,15 @@ package me.kubbidev.blocktune.core.skill.handler.def;
 import me.kubbidev.blocktune.core.UtilityMethod;
 import me.kubbidev.blocktune.core.damage.DamageType;
 import me.kubbidev.blocktune.core.damage.Element;
-import me.kubbidev.blocktune.core.entity.EntityMetadataProvider;
 import me.kubbidev.blocktune.core.skill.SkillMetadata;
 import me.kubbidev.blocktune.core.skill.handler.SkillHandler;
+import me.kubbidev.blocktune.core.skill.handler.SkillHandlerRunnable;
 import me.kubbidev.blocktune.core.skill.result.def.SimpleSkillResult;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -27,36 +26,23 @@ public class SunHaloDragonHeadDance extends SkillHandler<SimpleSkillResult> {
     @Override
     public void whenCast(SimpleSkillResult result, SkillMetadata meta) {
         LivingEntity caster = meta.entity();
-        // attach this handler as casting in the entity metadata map instance
-        EntityMetadataProvider.onCastStart(caster, this);
 
         double damage = meta.parameter("damage");
         double radius = meta.parameter("radius");
 
         double knockback = meta.parameter("knockback");
         double repulsion = meta.parameter("repulsion");
-        new BukkitRunnable() {
+        new SkillHandlerRunnable() {
             int t1 = 0;
             int t2 = 0;
 
             @Override
-            public void run() {
-                if (!caster.isValid() || t1++ > 20) {
-                    // remove this handler from casting in the caster metadata map instance
-                    EntityMetadataProvider.onCastEnd(caster, SunHaloDragonHeadDance.this);
-                    cancel();
-                    return;
-                }
+            public boolean shouldCancel() {
+                return !caster.isValid() || t1++ > 20;
+            }
 
-                Location location = caster.getLocation();
-                if (t1 == 1) {
-                    caster.getWorld().playSound(caster, Sound.ITEM_TOTEM_USE, 0.5f, 1.f);
-                    caster.getWorld().playSound(caster, Sound.ENTITY_ENDER_DRAGON_GROWL, 0.5f, 1.f);
-
-                    Particle.EXPLOSION.builder().location(location)
-                            .count(2).offset(0.5, 0.5, 0.5).extra(2.0).spawn();
-                }
-
+            @Override
+            protected void tick() {
                 Vector velocity = UtilityMethod.getForwardVelocity(caster, false);
                 caster.setVelocity(velocity.multiply(0.8).setY(caster.getVelocity().getY()));
 
@@ -68,7 +54,7 @@ public class SunHaloDragonHeadDance extends SkillHandler<SimpleSkillResult> {
                     Vector rotated = new Vector(x, y, z)
                             .rotateAroundY(Math.toRadians(-caster.getYaw()));
 
-                    Location displayLoc = location.clone().add(rotated);
+                    Location displayLoc = caster.getLocation().clone().add(rotated);
                     UtilityMethod.attack(meta, displayLoc,
                             damage,
                             radius,
@@ -95,6 +81,20 @@ public class SunHaloDragonHeadDance extends SkillHandler<SimpleSkillResult> {
                     caster.getWorld().playSound(caster, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 0.8f);
                 }
             }
-        }.runTaskTimer(meta.plugin(), 0, 1);
+
+            @Override
+            protected void onStart() {
+                caster.getWorld().playSound(caster, Sound.ITEM_TOTEM_USE, 0.5f, 1.f);
+                caster.getWorld().playSound(caster, Sound.ENTITY_ENDER_DRAGON_GROWL, 0.5f, 1.f);
+
+                Particle.EXPLOSION.builder().location(caster.getLocation())
+                        .count(2).offset(0.5, 0.5, 0.5).extra(2.0).spawn();
+            }
+
+            @Override
+            protected void onEnd() {
+
+            }
+        }.runTask(meta);
     }
 }
