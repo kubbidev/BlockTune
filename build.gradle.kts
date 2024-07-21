@@ -2,6 +2,7 @@ plugins {
     id("java")
     id("java-library")
     alias(libs.plugins.shadow)
+    id("io.papermc.paperweight.userdev") version "1.7.1"
 }
 
 // store the version as a variable,
@@ -32,6 +33,8 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
+
+    paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
 
     // internal dependencies
     compileOnly("me.kubbidev.nexuspowered:nexuspowered:1.0-SNAPSHOT")

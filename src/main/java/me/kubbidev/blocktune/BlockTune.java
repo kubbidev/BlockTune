@@ -3,6 +3,7 @@ package me.kubbidev.blocktune;
 import lombok.Getter;
 import me.kubbidev.blocktune.config.BlockTuneConfiguration;
 import me.kubbidev.blocktune.config.generic.adapter.*;
+import me.kubbidev.blocktune.core.ai.TanjiroEntity;
 import me.kubbidev.blocktune.core.listener.AttackActionListener;
 import me.kubbidev.blocktune.core.listener.AttackEventListener;
 import me.kubbidev.blocktune.core.manager.DamageManager;
@@ -15,6 +16,8 @@ import me.kubbidev.blocktune.placeholder.DefaultPlaceholderParser;
 import me.kubbidev.blocktune.placeholder.PlaceholderAPIHook;
 import me.kubbidev.blocktune.placeholder.PlaceholderAPIParser;
 import me.kubbidev.blocktune.placeholder.PlaceholderParser;
+import me.kubbidev.nexuspowered.Commands;
+import me.kubbidev.nexuspowered.command.argument.Argument;
 import me.kubbidev.nexuspowered.plugin.ExtendedJavaPlugin;
 import me.kubbidev.nexuspowered.util.Players;
 import org.bukkit.event.EventHandler;
@@ -89,6 +92,22 @@ public final class BlockTune extends ExtendedJavaPlugin implements Listener {
         // register with the BlockTune API
         getServer().getServicesManager().register(BlockTune.class, this, this, ServicePriority.Normal);
         BlockTuneProvider.register(this);
+
+        Commands.create()
+                .assertPlayer()
+                .handler(context -> {
+                    Argument argument = context.arg(0);
+                    int amount = 1;
+                    if (argument.isPresent()) {
+                        amount = argument.parseOrFail(Integer.class);
+                    }
+
+                    for (int i = 0; i < amount; i++) {
+                        TanjiroEntity entity = new TanjiroEntity(this, context.sender().getLocation());
+                        entity.spawn();
+                    }
+                })
+                .registerAndBind(this, "spawn");
     }
 
     @Override
