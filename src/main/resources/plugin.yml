@@ -6,8 +6,8 @@ website: https://kubbidev.com
 main: me.kubbidev.blocktune.BlockTune
 load: STARTUP
 
-# Depend on NexusPowered common library
-depend: [NexusPowered]
+# Depend on NexusPowered and SpellCaster common library
+depend: [NexusPowered, SpellCaster]
 
 # Soft depend on the placeholder api to translate texts
 softdepend: [PlaceholderAPI]

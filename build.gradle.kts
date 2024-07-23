@@ -38,13 +38,10 @@ dependencies {
 
     // internal dependencies
     compileOnly("me.kubbidev.nexuspowered:nexuspowered:1.0-SNAPSHOT")
+    compileOnly("me.kubbidev.spellcaster:spellcaster:1.0-SNAPSHOT")
 
     // optional dependencies
     compileOnly("me.clip:placeholderapi:2.11.6")
-
-    // lombok dependencies & annotation processor
-    compileOnly("org.projectlombok:lombok:1.18.32")
-    annotationProcessor("org.projectlombok:lombok:1.18.32")
 }
 
 // building task operations

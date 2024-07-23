@@ -1,6 +1,5 @@
 package me.kubbidev.blocktune.scoreboard;
 
-import lombok.Getter;
 import me.kubbidev.blocktune.BlockTune;
 import me.kubbidev.nexuspowered.Schedulers;
 import me.kubbidev.nexuspowered.scheduler.Task;
@@ -15,10 +14,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ScoreboardManager implements Listener {
-    @Getter
     private final BlockTune plugin;
-
-    @Getter
     private final ScoreboardTemplate scoreboardTemplate = new ScoreboardTemplate();
 
     // uuid -> player identifier, cache use to keep track of all scoreboard instances running
@@ -26,6 +22,14 @@ public class ScoreboardManager implements Listener {
 
     public ScoreboardManager(@NotNull BlockTune plugin) {
         this.plugin = plugin;
+    }
+
+    public @NotNull BlockTune getPlugin() {
+        return this.plugin;
+    }
+
+    public @NotNull ScoreboardTemplate getScoreboardTemplate() {
+        return this.scoreboardTemplate;
     }
 
     @EventHandler
@@ -46,7 +50,7 @@ public class ScoreboardManager implements Listener {
     }
 
     private void startScoreboardThread(@NotNull Scoreboard scoreboard) {
-        UpdateScoreboardThread thread = new UpdateScoreboardThread(this, scoreboard);
+        UpdateScoreboardTask thread = new UpdateScoreboardTask(this, scoreboard);
         // create a new task that will loop indefinitely and update the scoreboard every time it ticks
         Task task = Schedulers.sync().runRepeating(thread, 1L, 2L);
         task.bindWith(scoreboard);

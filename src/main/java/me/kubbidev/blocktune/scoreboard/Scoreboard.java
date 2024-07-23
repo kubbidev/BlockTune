@@ -1,6 +1,5 @@
 package me.kubbidev.blocktune.scoreboard;
 
-import lombok.Getter;
 import me.kubbidev.nexuspowered.terminable.TerminableConsumer;
 import me.kubbidev.nexuspowered.terminable.composite.CompositeTerminable;
 import me.kubbidev.nexuspowered.terminable.module.TerminableModule;
@@ -28,7 +27,6 @@ public class Scoreboard implements TerminableConsumer {
 
     private final org.bukkit.scoreboard.Scoreboard scoreboard;
 
-    @Getter
     private final Player player;
     private final List<Component> currentLines = new ArrayList<>();
 
@@ -45,6 +43,10 @@ public class Scoreboard implements TerminableConsumer {
         }
         this.player = player;
         this.player.setScoreboard(this.scoreboard);
+    }
+
+    public @NotNull Player getPlayer() {
+        return this.player;
     }
 
     public void updateTitle(@NotNull Component title) {

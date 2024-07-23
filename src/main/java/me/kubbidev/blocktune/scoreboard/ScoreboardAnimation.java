@@ -1,19 +1,12 @@
 package me.kubbidev.blocktune.scoreboard;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 public class ScoreboardAnimation<T> {
     private final T[] frames;
     private int currentFrame;
 
-    @Setter
-    @Getter
     private boolean looping;
-
-    @Setter
-    @Getter
     private boolean backAndForth;
     private boolean forward;
 
@@ -96,4 +89,19 @@ public class ScoreboardAnimation<T> {
         this.currentFrame = frame;
     }
 
+    public boolean isLooping() {
+        return this.looping;
+    }
+
+    public void setLooping(boolean looping) {
+        this.looping = looping;
+    }
+
+    public boolean isBackAndForth() {
+        return this.backAndForth;
+    }
+
+    public void setBackAndForth(boolean backAndForth) {
+        this.backAndForth = backAndForth;
+    }
 }
