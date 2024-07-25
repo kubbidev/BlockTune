@@ -100,6 +100,11 @@ public final class UtilityMethod {
                 d = damage;
                 k = knockback;
 
+                // return entity loop here if it cannot be damaged yet
+                if (target.getNoDamageTicks() > (target.getMaximumNoDamageTicks() / 2.0)) {
+                    continue;
+                }
+
                 boolean isCasterCasting = SpellMetadataProvider.isCasting(caster);
                 boolean isVictimCasting = SpellMetadataProvider.isCasting(target);
 
@@ -119,12 +124,14 @@ public final class UtilityMethod {
 
                     if (isBlocking) {
                         intelligentHandsSwing(target);
-                        location.getWorld().playSound(target, "minecraft:custom.generic.sword_guard", 0.5f, 1.0f);
+                        location.getWorld().playSound(target, "minecraft:custom.generic.sword_guard", 0.2f, 1.0f);
 
                         Location displayLoc = target.getEyeLocation();
                         displayLoc.getWorld().spawnParticle(Particle.FLASH, displayLoc, 0);
-                        displayLoc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, displayLoc,
-                                5, 0.5, 0.5, 0.5, 0.5);
+                        displayLoc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, displayLoc, 64,
+                                0.5,
+                                0.5,
+                                0.5, 0.5);
                     }
                     if (isKnockback) {
                         double[] velocity = getRepulsionVelocity(caster, target);
