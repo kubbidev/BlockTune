@@ -28,25 +28,25 @@ public final class SpellMetadataProvider {
      * @param entity The entity owning the list.
      * @return currently casted spells list or new instance if not found
      */
-    private static List<String> retrieveCurrentlyCasted(LivingEntity entity) {
+    private static List<String> getCurrentlyCasted(LivingEntity entity) {
         return Metadata.provide(entity).getOrPut(CURRENTLY_CASTED, ArrayList::new);
     }
 
     public static void onCastStart(SpellMetadata meta) {
         synchronized (CURRENTLY_CASTED) {
-            retrieveCurrentlyCasted(meta.entity()).add(meta.cast().getHandler().getId());
+            getCurrentlyCasted(meta.entity()).add(meta.cast().getHandler().getId());
         }
     }
 
     public static void onCastEnd(SpellMetadata meta) {
         synchronized (CURRENTLY_CASTED) {
-            retrieveCurrentlyCasted(meta.entity()).remove(meta.cast().getHandler().getId());
+            getCurrentlyCasted(meta.entity()).remove(meta.cast().getHandler().getId());
         }
     }
 
     public static boolean isCasting(LivingEntity entity) {
         synchronized (CURRENTLY_CASTED) {
-            return !retrieveCurrentlyCasted(entity).isEmpty();
+            return !getCurrentlyCasted(entity).isEmpty();
         }
     }
 }

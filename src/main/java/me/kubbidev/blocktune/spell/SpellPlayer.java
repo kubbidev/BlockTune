@@ -100,7 +100,7 @@ public final class SpellPlayer extends BukkitRunnable {
             // for the actual selected spell
             AtomicReference<Float> progress = new AtomicReference<>(BossBar.MAX_PROGRESS);
 
-            CooldownMap<SpellHandler<?>> cooldownMap = EntityMetadataProvider.retrieveCooldown(this.player);
+            CooldownMap<SpellHandler<?>> cooldownMap = EntityMetadataProvider.getCooldownMap(this.player);
             cooldownMap.get(handler).ifPresent(cooldown -> {
                 float percentage = ((float) cooldown.remainingMillis() / cooldown.getTimeout());
                 float difference = BossBar.MAX_PROGRESS - percentage;
