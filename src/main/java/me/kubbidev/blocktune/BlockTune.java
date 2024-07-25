@@ -1,24 +1,15 @@
 package me.kubbidev.blocktune;
 
-import me.kubbidev.blocktune.ai.TanjiroEntity;
+import me.kubbidev.blocktune.commands.*;
 import me.kubbidev.blocktune.spell.listener.AttackActionListener;
 import me.kubbidev.blocktune.scoreboard.ScoreboardManager;
 import me.kubbidev.blocktune.placeholder.DefaultPlaceholderParser;
 import me.kubbidev.blocktune.placeholder.PlaceholderAPIHook;
 import me.kubbidev.blocktune.placeholder.PlaceholderAPIParser;
 import me.kubbidev.blocktune.placeholder.PlaceholderParser;
-import me.kubbidev.nexuspowered.Commands;
-import me.kubbidev.nexuspowered.command.argument.Argument;
 import me.kubbidev.nexuspowered.plugin.ExtendedJavaPlugin;
 import me.kubbidev.nexuspowered.util.Players;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Random;
-
-import static me.kubbidev.spellcaster.InternalMethod.getAttributeValue;
-import static me.kubbidev.spellcaster.InternalMethod.heal;
 
 public final class BlockTune extends ExtendedJavaPlugin {
     // init during enable
@@ -50,43 +41,12 @@ public final class BlockTune extends ExtendedJavaPlugin {
         // register listeners
         registerPlatformListeners();
 
+        // register commands
+        registerCommands();
+
         // register with the BlockTune API
         BlockTuneProvider.register(this);
         registerApiOnPlatform();
-
-        Commands.create().assertOp().assertPlayer()
-                .handler(context -> {
-                    Player player = context.sender();
-                    heal(player, getAttributeValue(player, Attribute.GENERIC_MAX_HEALTH));
-                })
-                .registerAndBind(this, "heal");
-
-        Commands.create().assertOp().assertPlayer()
-                .handler(context -> context.sender().setFoodLevel(20))
-                .registerAndBind(this, "feed");
-
-        Commands.create()
-                .assertPlayer()
-                .handler(context -> {
-                    Argument argumentAmount = context.arg(0);
-                    int amount = 1;
-                    if (argumentAmount.isPresent()) {
-                        amount = argumentAmount.parseOrFail(Integer.class);
-                    }
-
-                    Argument argumentAttackSpeed = context.arg(1);
-                    int attackSpeed = new Random().nextInt(10, 61);
-                    if (argumentAttackSpeed.isPresent()) {
-                        attackSpeed = argumentAttackSpeed.parseOrFail(Integer.class);
-                    }
-
-                    for (int i = 0; i < amount; i++) {
-                        TanjiroEntity entity = new TanjiroEntity(this, context.sender().getLocation());
-                        entity.setAttackSpeed(attackSpeed);
-                        entity.spawn();
-                    }
-                })
-                .registerAndBind(this, "spawn");
     }
 
     @Override
@@ -107,6 +67,12 @@ public final class BlockTune extends ExtendedJavaPlugin {
     private void registerPlatformListeners() {
         registerListener(this.scoreboardManager);
         registerListener(this.actionListener);
+    }
+
+    private void registerCommands() {
+        HealCommand.register(this);
+        FeedCommand.register(this);
+        SpawnCommand.register(this);
     }
 
     private void registerApiOnPlatform() {
