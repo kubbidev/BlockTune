@@ -1,7 +1,8 @@
-package me.kubbidev.blocktune.ai;
+package me.kubbidev.blocktune.entity;
 
 import com.google.common.collect.ImmutableMap;
 import me.kubbidev.blocktune.BlockTune;
+import me.kubbidev.blocktune.UtilityMethod;
 import me.kubbidev.blocktune.event.EndSpellCastEvent;
 import me.kubbidev.nexuspowered.Events;
 import net.minecraft.core.Holder;
@@ -148,32 +149,26 @@ public abstract class SmartEntity extends Zombie {
     }
 
     public static void tickDirection(@NotNull Mob entity) {
-        double x;
-        double y;
-        double z;
-
         LivingEntity target = entity.getTarget();
         if (target == null) {
             return;
         }
 
-        BlockHitResult result1 = rayTraceBlocks(target, 0.0, ClipContext.Block.COLLIDER);
-        BlockHitResult result2 = rayTraceBlocks(entity, 0.0, ClipContext.Block.COLLIDER);
-
-        x = result1.getLocation().x() - result2.getLocation().x();
-        y = result1.getLocation().y() - result2.getLocation().y();
-        z = result1.getLocation().z() - result2.getLocation().z();
+        double x = target.getX() - entity.getX();
+        double y = target.getY() - entity.getY();
+        double z = target.getZ() - entity.getZ();
 
         // calculate the distance between the entity and the target
-        double disManhattan = Math.abs(x) + Math.abs(y) + Math.abs(z);
-        if (disManhattan == 0.0) {
+        double dis = UtilityMethod.disManhattan(x, y, z);
+        if (dis == 0.0) {
             x = 0;
             y = 0;
             z = 0;
         } else {
-            x /= disManhattan;
-            y /= disManhattan;
-            z /= disManhattan;
+            double scale = 1.0 / dis;
+            x *= scale;
+            y *= scale;
+            z *= scale;
         }
 
         double yaw = 0;
@@ -194,6 +189,9 @@ public abstract class SmartEntity extends Zombie {
 
         entity.setYHeadRot(entity.getYRot());
         entity.yHeadRotO = entity.getYRot();
+
+        entity.setYBodyRot(entity.getYRot());
+        entity.yBodyRotO = entity.getYRot();
 
         entity.setXRot((float) pitch);
         entity.xRotO = entity.getXRot();
