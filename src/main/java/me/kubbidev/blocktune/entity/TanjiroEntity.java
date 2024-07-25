@@ -4,10 +4,7 @@ import com.google.common.base.Preconditions;
 import me.kubbidev.blocktune.BlockTune;
 import me.kubbidev.blocktune.spell.SpellMetadataProvider;
 import me.kubbidev.blocktune.spell.Ability;
-import me.kubbidev.spellcaster.SpellCasterProvider;
 import me.kubbidev.spellcaster.spell.Spell;
-import me.kubbidev.spellcaster.spell.SpellMetadata;
-import me.kubbidev.spellcaster.spell.handler.SpellHandler;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -27,7 +24,7 @@ import java.util.Random;
 
 @ApiStatus.Experimental
 @ApiStatus.Internal
-public class TanjiroEntity extends SmartEntity {
+public final class TanjiroEntity extends SmartEntity {
     private final Random random = new Random();
     // default values
     private int attackSpeed = 60;
@@ -66,10 +63,6 @@ public class TanjiroEntity extends SmartEntity {
                 .add(Attributes.ARMOR, 10.0);
     }
 
-    public int getAttackSpeed() {
-        return this.attackSpeed;
-    }
-
     /**
      * Sets the entity attack speed in ticks.
      *
@@ -86,17 +79,22 @@ public class TanjiroEntity extends SmartEntity {
     @Override
     public void baseTick() {
         super.baseTick();
+        if (!isAlive()) {
+            return;
+        }
         double x = getX();
         double y = getY();
         double z = getZ();
         ServerLevel instance = (ServerLevel) level();
-        if (!isAlive()) {
-            return;
-        }
+        tickDirection(this);
 
         if (this.m == 0) {
             @Nullable LivingEntity target = getTarget();
-            if (target != null) {
+            if (target == null) {
+                if (this.x > this.attackLimit) {
+                    this.x = this.attackLimit;
+                }
+            } else {
                 this.x++;
                 if (this.x > this.breathSpeed && Math.random() < 0.5) {
                     instance.sendParticles(ParticleTypes.CLOUD, x, y + 1.6, z, 0, 0, 0, 0, 0);
@@ -106,25 +104,26 @@ public class TanjiroEntity extends SmartEntity {
 
                     int s;
                     while (true) {
-                        s = (int) (Math.ceil(this.random.nextDouble() * 12.0) + 17.0);
-                        if (target.distanceToSqr(this) > (12 * 12)) {
-                            if (s == 23 || s == 25 || s == 26) {
+                        s = this.random.nextInt(12);
+
+                        var distance = target.distanceToSqr(this);
+                        if (distance > (12 * 12)) {
+                            // high distance (only high range spell)
+                            if (s == 6 || s == 8 || s == 9) {
                                 break;
                             }
                         } else {
-                            if (target.distanceToSqr(this) <= (6 * 6)) {
+                            // close distance (accept anything)
+                            if (distance <= (6 * 6)) {
                                 break;
                             }
-                            if (s != 19 && s != 24 && s != 27 && s != 28 && s != 29) {
+                            // mid distance (anything except close range spell)
+                            if (s != 1 && s != 4 && s != 5 && s != 10 && s != 11) {
                                 break;
                             }
                         }
                     }
                     this.m = s;
-                }
-            } else {
-                if (this.x > this.attackLimit) {
-                    this.x = this.attackLimit;
                 }
             }
         } else {
@@ -135,65 +134,27 @@ public class TanjiroEntity extends SmartEntity {
                     this.plugin.getLogger().info("Selected a null ability: " + this.m);
                     this.m = 0;
                 } else {
-                    Spell spell = getSpell(ability);
+                    Spell spell = new SmartEntitySpell(ability);
                     spell.cast(getBukkitLivingEntity());
                 }
             }
         }
-
-        tickDirection(this);
-    }
-
-    private @NotNull Spell getSpell(Ability ability) {
-        return new Spell(SpellCasterProvider.get()) {
-
-            @Override
-            public boolean getResult(SpellMetadata meta) {
-                return true;
-            }
-
-            @Override
-            public void whenCast(SpellMetadata meta) {
-
-            }
-
-            @Override
-            public SpellHandler<?> getHandler() {
-                return ability.getHandler();
-            }
-
-            @Override
-            public double getParameter(String path) {
-                return ability.getParameters().getOrDefault(path, 0d);
-            }
-        };
     }
 
     private @Nullable Ability selectAbility() {
-        Ability ability = null;
-        if (this.m == 18) {
-            ability = Ability.DANCE;
-        } else if (this.m == 19) {
-            ability = Ability.CLEAR_BLUE_SKY;
-        } else if (this.m == 20) {
-            ability = Ability.RAGING_SUN;
-        } else if (this.m == 21) {
-            ability = Ability.BURNING_BONES_SUMMER_SUN;
-        } else if (this.m == 22) {
-            ability = Ability.SUNFLOWER_THRUST;
-        } else if (this.m == 23) {
-            ability = Ability.SUN_HALO_DRAGON_HEAD_DANCE;
-        } else if (this.m == 24) {
-            ability = Ability.SETTING_SUN_TRANSFORMATION;
-        } else if (this.m == 25) {
-            ability = Ability.BENEFICENT_RADIANCE;
-        } else if (this.m == 26) {
-            ability = Ability.FIRE_WHEEL;
-        } else if (this.m == 27) {
-        } else if (this.m == 28) {
-        } else if (this.m == 29) {
-            ability = Ability.SOLAR_HEAT_HAZE;
-        }
-        return ability;
+        return switch (this.m) {
+            case 0 -> Ability.DANCE;
+            case 1 -> Ability.CLEAR_BLUE_SKY;
+            case 2 -> Ability.RAGING_SUN;
+            case 3 -> Ability.BURNING_BONES_SUMMER_SUN;
+            case 4 -> Ability.SETTING_SUN_TRANSFORMATION;
+            case 5 -> Ability.SOLAR_HEAT_HAZE;
+            case 6 -> Ability.BENEFICENT_RADIANCE;
+            case 7 -> Ability.SUNFLOWER_THRUST;
+            case 8 -> Ability.SUN_HALO_DRAGON_HEAD_DANCE;
+            case 9 -> Ability.FIRE_WHEEL;
+            case 10, 11 -> null;
+            default -> throw new IllegalStateException("Unexpected value: " + this.m);
+        };
     }
 }
