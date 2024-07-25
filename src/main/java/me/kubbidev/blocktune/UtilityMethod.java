@@ -9,6 +9,7 @@ import me.kubbidev.spellcaster.damage.Element;
 import me.kubbidev.spellcaster.spell.SpellMetadata;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -83,7 +84,6 @@ public final class UtilityMethod {
         double d;
         double k;
         boolean isSwinging = false;
-        boolean isBlocking;
 
         // scale damage on caster strength effect amplifier
         damage *= 1.0 + ((double) getPotionAmplifier(caster, PotionEffectType.STRENGTH) / 3);
@@ -94,13 +94,13 @@ public final class UtilityMethod {
                 .toList()) {
 
             if (canTarget(SpellCasterProvider.get(), caster, victim)) {
-                isBlocking = false;
+                boolean isBlocking = false;
 
                 LivingEntity target = (LivingEntity) victim;
                 d = damage;
                 k = knockback;
 
-                // return entity loop here if it cannot be damaged yet
+                // skip if the target cannot be damaged yet
                 if (target.getNoDamageTicks() > (target.getMaximumNoDamageTicks() / 2.0)) {
                     continue;
                 }
@@ -147,8 +147,7 @@ public final class UtilityMethod {
 
                 if (repulsion == 1.0) {
                     victim.remove();
-                }
-                if (repulsion == 2.0) {
+                } else if (repulsion == 2.0) {
                     double[] velocity = getRepulsionVelocity(caster, victim);
                     double x = velocity[0] / 2.0;
                     double y = velocity[1] / 2.0;
@@ -169,20 +168,21 @@ public final class UtilityMethod {
         }
     }
 
-    private static double[] getRepulsionVelocity(Entity entity, Entity target) {
+    public static double[] getRepulsionVelocity(Entity entity, Entity target) {
         double x = target.getX() - entity.getX();
         double y = target.getY() - entity.getY();
         double z = target.getZ() - entity.getZ();
         // calculate the distance between the entity and the target
-        double disManhattan = Math.abs(x) + Math.abs(y) + Math.abs(z);
-        if (disManhattan == 0.0) {
+        double dis = disManhattan(x, y, z);
+        if (dis == 0.0) {
             x = target.getVelocity().getX();
             y = target.getVelocity().getY();
             z = target.getVelocity().getZ();
         } else {
-            x = x / disManhattan * 3.0;
-            y = y / disManhattan * 3.0;
-            z = z / disManhattan * 3.0;
+            double scale = 3.0 / dis;
+            x *= scale;
+            y *= scale;
+            z *= scale;
         }
         // return the resulting knockback velocity vector
         return new double[]{x, y, z};
@@ -229,15 +229,16 @@ public final class UtilityMethod {
             y = loc1.getY() - loc2.getY();
             z = loc1.getZ() - loc2.getZ();
         }
-        double disManhattan = Math.abs(x) + Math.abs(y) + Math.abs(z);
-        if (disManhattan == 0.0) {
+        double dis = disManhattan(x, y, z);
+        if (dis == 0.0) {
             x = 0;
             y = 0;
             z = 0;
         } else {
-            x = x / disManhattan * 3.0;
-            y = y / disManhattan * 3.0;
-            z = z / disManhattan * 3.0;
+            double scale = 3.0 / dis;
+            x *= scale;
+            y *= scale;
+            z *= scale;
         }
 
         if (!isEntityNearGround(entity)) {
@@ -253,13 +254,28 @@ public final class UtilityMethod {
     }
 
     public static boolean isEntityNearGround(LivingEntity entity) {
-        Location loc = entity.getLocation();
-        // if the entity is airborne and not near solid blocks,
-        // ensure it does not gain upward velocity
-        return entity.isOnGround() ||
-                loc.getWorld().getBlockAt(loc.getBlockX() + 1, loc.getBlockY(), loc.getBlockZ()).isSolid() ||
-                loc.getWorld().getBlockAt(loc.getBlockX() - 1, loc.getBlockY(), loc.getBlockZ()).isSolid() ||
-                loc.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ() + 1).isSolid() ||
-                loc.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ() - 1).isSolid();
+        Location location = entity.getLocation();
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
+
+        World world = location.getWorld();
+        // first, return if the entity is on the ground
+        if (entity.isOnGround()) {
+            return true;
+        }
+        // ensure for adjacent blocks
+        return isSolid(world, x + 1, y, z)
+                || isSolid(world, x - 1, y, z)
+                || isSolid(world, x, y, z + 1)
+                || isSolid(world, x, y, z - 1);
+    }
+
+    public static boolean isSolid(World world, int x, int y, int z) {
+        return world.getBlockAt(x, y, z).isSolid();
+    }
+
+    public static double disManhattan(double x, double y, double z) {
+        return Math.abs(x) + Math.abs(y) + Math.abs(z);
     }
 }
