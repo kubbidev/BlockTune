@@ -89,6 +89,8 @@ public class SunHaloDragonHeadDance extends SpellHandler<SimpleSpellResult> {
 
                 Particle.EXPLOSION.builder().location(caster.getLocation())
                         .count(2).offset(0.5, 0.5, 0.5).extra(2.0).spawn();
+
+                Particle.FLASH.builder().location(caster.getLocation()).spawn();
             }
 
             @Override
