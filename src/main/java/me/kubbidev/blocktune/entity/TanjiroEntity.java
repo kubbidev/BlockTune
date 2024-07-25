@@ -1,4 +1,4 @@
-package me.kubbidev.blocktune.ai;
+package me.kubbidev.blocktune.entity;
 
 import com.google.common.base.Preconditions;
 import me.kubbidev.blocktune.BlockTune;
@@ -23,9 +23,12 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
+
 @ApiStatus.Experimental
 @ApiStatus.Internal
 public class TanjiroEntity extends SmartEntity {
+    private final Random random = new Random();
     // default values
     private int attackSpeed = 60;
     private int attackLimit = 50;
@@ -54,6 +57,7 @@ public class TanjiroEntity extends SmartEntity {
     @Override
     public @NotNull AttributeMap createAdditionalAttributes() {
         return new AttributeMap()
+                .add(Attributes.FOLLOW_RANGE, 64.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.33)
                 .add(Attributes.MAX_HEALTH, 120.0)
                 .add(Attributes.ATTACK_KNOCKBACK, 1.5)
@@ -102,7 +106,7 @@ public class TanjiroEntity extends SmartEntity {
 
                     int s;
                     while (true) {
-                        s = (int) (Math.ceil(Math.random() * 12.0) + 17.0);
+                        s = (int) (Math.ceil(this.random.nextDouble() * 12.0) + 17.0);
                         if (target.distanceToSqr(this) > (12 * 12)) {
                             if (s == 23 || s == 25 || s == 26) {
                                 break;
