@@ -55,11 +55,11 @@ public class ScoreboardTemplate {
                 "<dark_gray>\u00BB <red><bold>BLOCKTUNE</bold></red> \u00AB</dark_gray>",
                 "%blocktune_server_address%",
                 "",
-                "Ping: <green>%player_ping%ms</green>   Connectés: <green>%server_online%</green>",
+                "Ping: <green>%player_ping%ms</green>   Online: <green>%server_online%</green>",
                 ""
         );
         this.footer = Text.joinNewline("",
-                " Besoin d'aide ? Rejoins notre support ",
+                " Need help? Join our support server ",
                 "<dark_gray>➥</dark_gray> <red>/discord</red>",
                 ""
         );
