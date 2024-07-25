@@ -55,7 +55,9 @@ public final class PlaceholderAPIHook extends PlaceholderExpansion implements Ru
         return switch (params) {
             case "server_address" -> getServerAddressCurrentFrame();
             default -> {
-                if (player == null) yield null;
+                if (player == null) {
+                    yield null;
+                }
                 /*
                     store variables to avoid reuse, this method needs a lot of optimization
                     cause it may be call more than 20 times per seconds for each players on the server
@@ -65,7 +67,7 @@ public final class PlaceholderAPIHook extends PlaceholderExpansion implements Ru
         };
     }
 
-    public String getServerAddressCurrentFrame() {
+    public @NotNull String getServerAddressCurrentFrame() {
         return this.serverAddress.getCurrentFrame();
     }
 

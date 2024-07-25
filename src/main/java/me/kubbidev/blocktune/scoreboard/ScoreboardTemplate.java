@@ -24,7 +24,7 @@ public class ScoreboardTemplate {
             "<gold>kubbidev.com</gold>"
     };
 
-    private final String[] lines;
+    private final String[][] lines;
     private final String title;
     private final String header;
     private final String footer;
@@ -32,22 +32,24 @@ public class ScoreboardTemplate {
     @SuppressWarnings("UnnecessaryUnicodeEscape")
     public ScoreboardTemplate() {
         this.title = "<red><bold>BLOCKTUNE</bold></red>";
-        this.lines = new String[]{
-                "<gray>%server_time_dd/MM/yyyy%</gray>",
-                "",
-                "<red><bold>INFOS</bold></red>",
-                " <dark_gray>\u2503</dark_gray> Instance : <aqua>%player_world%</aqua>",
-                " <dark_gray>\u2503</dark_gray> x : <yellow>%player_x%</yellow>",
-                " <dark_gray>\u2503</dark_gray> y : <yellow>%player_y%</yellow>",
-                " <dark_gray>\u2503</dark_gray> z : <yellow>%player_z%</yellow>",
-                " <dark_gray>\u2503</dark_gray> Biome : <green>%player_biome_capitalized%</green>",
-                "",
-                "<red><bold>SERVER</bold></red>",
-                " <dark_gray>\u2503</dark_gray> Ram : <gold>%server_ram_used%</gold>/<gold>%server_ram_max%</gold>",
-                " <dark_gray>\u2503</dark_gray> TPS : <green>%server_tps_1%</green>",
-                " <dark_gray>\u2503</dark_gray> Online : <green>%server_online%</green>",
-                "",
-                "%blocktune_server_address%",
+        this.lines = new String[][]{
+                new String[]{
+                        "<gray>%server_time_dd/MM/yyyy%</gray>",
+                        "",
+                        "<red><bold>INFOS</bold></red>",
+                        " <dark_gray>\u2503</dark_gray> Instance : <aqua>%player_world%</aqua>",
+                        " <dark_gray>\u2503</dark_gray> x : <yellow>%player_x%</yellow>",
+                        " <dark_gray>\u2503</dark_gray> y : <yellow>%player_y%</yellow>",
+                        " <dark_gray>\u2503</dark_gray> z : <yellow>%player_z%</yellow>",
+                        " <dark_gray>\u2503</dark_gray> Biome : <green>%player_biome_capitalized%</green>",
+                        "",
+                        "<red><bold>SERVER</bold></red>",
+                        " <dark_gray>\u2503</dark_gray> Ram : <gold>%server_ram_used%</gold>/<gold>%server_ram_max%</gold>",
+                        " <dark_gray>\u2503</dark_gray> TPS : <green>%server_tps_1%</green>",
+                        " <dark_gray>\u2503</dark_gray> Online : <green>%server_online%</green>",
+                        "",
+                        "%blocktune_server_address%"
+                }
         };
         this.header = Text.joinNewline("",
                 "<dark_gray>\u00BB <red><bold>BLOCKTUNE</bold></red> \u00AB</dark_gray>",
@@ -63,8 +65,12 @@ public class ScoreboardTemplate {
         );
     }
 
-    public @NotNull String[] getLines() {
-        return this.lines;
+    public enum ScoreboardType {
+        NORMAL
+    }
+
+    public @NotNull String[] getLines(@NotNull ScoreboardType type) {
+        return this.lines[type.ordinal()];
     }
 
     public @NotNull String getTitle() {
