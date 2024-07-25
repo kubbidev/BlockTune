@@ -11,15 +11,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.BlockHitResult;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
@@ -195,27 +192,5 @@ public abstract class SmartEntity extends Zombie {
 
         entity.setXRot((float) pitch);
         entity.xRotO = entity.getXRot();
-    }
-
-    public static BlockHitResult rayTraceBlocks(Entity entity, double range) {
-        return rayTraceBlocks(entity, range, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE);
-    }
-
-    public static BlockHitResult rayTraceBlocks(Entity entity, double range, ClipContext.Block block) {
-        return rayTraceBlocks(entity, range, block, ClipContext.Fluid.NONE);
-    }
-
-    public static BlockHitResult rayTraceBlocks(Entity entity, double range, ClipContext.Fluid fluid) {
-        return rayTraceBlocks(entity, range, ClipContext.Block.OUTLINE, fluid);
-    }
-
-    @SuppressWarnings("resource")
-    public static BlockHitResult rayTraceBlocks(Entity entity, double range, ClipContext.Block block, ClipContext.Fluid fluid) {
-        return entity.level().clip(new ClipContext(
-                entity.getEyePosition(1.0f),
-                entity.getEyePosition(1.0f).add(
-                        entity.getViewVector(1.0f).x() * range,
-                        entity.getViewVector(1.0f).y() * range,
-                        entity.getViewVector(1.0f).z() * range), block, fluid, entity));
     }
 }
