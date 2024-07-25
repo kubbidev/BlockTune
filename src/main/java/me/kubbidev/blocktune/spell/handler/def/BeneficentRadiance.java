@@ -48,7 +48,6 @@ public class BeneficentRadiance extends SpellHandler<SimpleSpellResult> {
                 caster.getWorld().playSound(caster, Sound.ENTITY_BLAZE_SHOOT, 0.5f, 1.0f);
                 caster.setVelocity(this.velocity.toVector());
 
-                // todo should we really want to run attack method here also ??
                 Particle.FLAME.builder().location(location)
                         .count(8).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
 
