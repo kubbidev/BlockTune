@@ -3,7 +3,7 @@ package me.kubbidev.blocktune.spell.handler.def;
 import me.kubbidev.blocktune.UtilityMethod;
 import me.kubbidev.blocktune.spell.handler.SpellRunnable;
 import me.kubbidev.spellcaster.damage.DamageType;
-import me.kubbidev.spellcaster.damage.Element;
+import me.kubbidev.spellcaster.element.Element;
 import me.kubbidev.spellcaster.spell.SpellMetadata;
 import me.kubbidev.spellcaster.spell.handler.SpellHandler;
 import me.kubbidev.spellcaster.spell.result.def.SimpleSpellResult;
@@ -35,7 +35,7 @@ public class BeneficentRadiance extends SpellHandler<SimpleSpellResult> {
         double repulsion = meta.parameter("repulsion");
         new SpellRunnable() {
             Location velocity = null;
-            double t = 0.0;
+            double   t        = 0.0;
 
             @Override
             public boolean shouldCancel() {
@@ -49,40 +49,40 @@ public class BeneficentRadiance extends SpellHandler<SimpleSpellResult> {
                 caster.setVelocity(this.velocity.toVector());
 
                 Particle.FLAME.builder().location(location)
-                        .count(8).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
+                    .count(8).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
 
                 Particle.INSTANT_EFFECT.builder().location(location)
-                        .count(4).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
+                    .count(4).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
 
                 Particle.DUST.builder().location(location).color(Color.RED, 2.f)
-                        .count(2).offset(0.1, 0.1, 0.1).spawn();
+                    .count(2).offset(0.1, 0.1, 0.1).spawn();
 
                 for (double i = 0.0; i < Math.PI / 2.0; i += Math.PI / 24.0) {
                     double x = Math.cos(i + t) * 2;
                     double y = Math.sin(i + t) * 2;
 
                     Vector rotated = new Vector(x, y, 0)
-                            .rotateAroundX(Math.toRadians(velocity.getPitch()))
-                            .rotateAroundY(Math.toRadians(-velocity.getYaw()));
+                        .rotateAroundX(Math.toRadians(velocity.getPitch()))
+                        .rotateAroundY(Math.toRadians(-velocity.getYaw()));
 
                     Location displayLoc = location.clone().add(rotated);
                     UtilityMethod.attack(meta, displayLoc,
-                            damage,
-                            radius,
-                            knockback,
-                            repulsion, true, Element.FIRE,
-                            DamageType.MAGIC,
-                            DamageType.SPELL
+                        damage,
+                        radius,
+                        knockback,
+                        repulsion, true, Element.FIRE,
+                        DamageType.MAGIC,
+                        DamageType.SPELL
                     );
 
                     Particle.FLAME.builder().location(displayLoc)
-                            .count(4).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
+                        .count(4).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
 
                     Particle.INSTANT_EFFECT.builder().location(displayLoc)
-                            .count(2).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
+                        .count(2).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
 
                     Particle.DUST.builder().location(displayLoc).color(Color.RED, 2.f)
-                            .offset(0.1, 0.1, 0.1).spawn();
+                        .offset(0.1, 0.1, 0.1).spawn();
 
                     Particle.DUST.builder().location(displayLoc).color(Color.RED, 2.f).spawn();
                 }
@@ -96,16 +96,16 @@ public class BeneficentRadiance extends SpellHandler<SimpleSpellResult> {
 
                 if (this.velocity == null) {
                     this.velocity = UtilityMethod.getForwardVelocity(caster, true).multiply(0.8)
-                            .toLocation(caster.getWorld(),
-                                    location.getYaw(),
-                                    location.getPitch()
-                            );
+                        .toLocation(caster.getWorld(),
+                            location.getYaw(),
+                            location.getPitch()
+                        );
                 }
                 Particle.FLAME.builder().location(location)
-                        .count(20).extra(0.5).spawn();
+                    .count(20).extra(0.5).spawn();
 
                 Particle.CLOUD.builder().location(location)
-                        .count(20).extra(0.5).spawn();
+                    .count(20).extra(0.5).spawn();
             }
 
             @Override

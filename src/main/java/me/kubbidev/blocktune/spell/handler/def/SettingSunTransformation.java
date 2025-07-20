@@ -3,7 +3,7 @@ package me.kubbidev.blocktune.spell.handler.def;
 import me.kubbidev.blocktune.UtilityMethod;
 import me.kubbidev.blocktune.spell.handler.SpellRunnable;
 import me.kubbidev.spellcaster.damage.DamageType;
-import me.kubbidev.spellcaster.damage.Element;
+import me.kubbidev.spellcaster.element.Element;
 import me.kubbidev.spellcaster.spell.SpellMetadata;
 import me.kubbidev.spellcaster.spell.handler.SpellHandler;
 import me.kubbidev.spellcaster.spell.result.def.SimpleSpellResult;
@@ -66,28 +66,28 @@ public class SettingSunTransformation extends SpellHandler<SimpleSpellResult> {
                             double y = Math.sin(i + t) * layerRadius;
 
                             Vector rotated = new Vector(x, y, 0.0)
-                                    .rotateAroundX(Math.toRadians(location.getPitch() + 90.f))
-                                    .rotateAroundY(Math.toRadians(-location.getYaw()));
+                                .rotateAroundX(Math.toRadians(location.getPitch() + 90.f))
+                                .rotateAroundY(Math.toRadians(-location.getYaw()));
 
                             Location displayLoc = location.clone().add(rotated);
                             UtilityMethod.attack(meta, displayLoc,
-                                    damage,
-                                    radius,
-                                    knockback,
-                                    repulsion, false, Element.FIRE,
-                                    DamageType.MAGIC,
-                                    DamageType.SPELL
+                                damage,
+                                radius,
+                                knockback,
+                                repulsion, false, Element.FIRE,
+                                DamageType.MAGIC,
+                                DamageType.SPELL
                             );
 
                             if (layer == 2) {
                                 Particle.DUST.builder().location(displayLoc).color(Color.RED, 2.f)
-                                        .count(2).offset(0.1, 0.1, 0.1).spawn();
+                                    .count(2).offset(0.1, 0.1, 0.1).spawn();
                             } else {
                                 Particle.FLAME.builder().location(displayLoc)
-                                        .count(8).offset(0.1, 0.1, 0.1).extra(0.02).spawn();
+                                    .count(8).offset(0.1, 0.1, 0.1).extra(0.02).spawn();
 
                                 Particle.INSTANT_EFFECT.builder().location(displayLoc)
-                                        .count(2).offset(0.2, 0.2, 0.2).spawn();
+                                    .count(2).offset(0.2, 0.2, 0.2).spawn();
                             }
 
                         }
@@ -102,7 +102,7 @@ public class SettingSunTransformation extends SpellHandler<SimpleSpellResult> {
                 }
 
                 Particle.CLOUD.builder().location(caster.getLocation())
-                        .count(15).extra(0.2).spawn();
+                    .count(15).extra(0.2).spawn();
             }
 
             @Override

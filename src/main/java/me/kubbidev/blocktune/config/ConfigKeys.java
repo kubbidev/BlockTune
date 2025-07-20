@@ -15,12 +15,12 @@ import static me.kubbidev.nexuspowered.config.key.ConfigKeyFactory.booleanKey;
  * to function a bit like an enum, but with generics.</p>
  */
 public final class ConfigKeys {
+
     private ConfigKeys() {
     }
 
     /**
-     * When set to true, passive spells must be bound in order to take effect otherwise, unlocked spells
-     * will take effect right away.
+     * When set to true, passive spells must be bound in order to take effect otherwise, unlocked spells will take effect right away.
      */
     public static final ConfigKey<Boolean> PASSIVE_SPELLS_NEED_BOUND = booleanKey("passive-spell-need-bound", true);
 

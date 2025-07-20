@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @ApiStatus.Experimental
 public final class SpellPlayer extends BukkitRunnable {
+
     private final BlockTune plugin;
 
     @Nullable
@@ -29,17 +30,17 @@ public final class SpellPlayer extends BukkitRunnable {
     private Player player;
 
     private final List<Ability> unlockedAbilities = ImmutableList.<Ability>builder()
-            .add(Ability.DANCE)
-            .add(Ability.CLEAR_BLUE_SKY)
-            .add(Ability.RAGING_SUN)
-            .add(Ability.BURNING_BONES_SUMMER_SUN)
-            .add(Ability.SETTING_SUN_TRANSFORMATION)
-            .add(Ability.SOLAR_HEAT_HAZE)
-            .add(Ability.BENEFICENT_RADIANCE)
-            .add(Ability.SUNFLOWER_THRUST)
-            .add(Ability.SUN_HALO_DRAGON_HEAD_DANCE)
-            .add(Ability.FIRE_WHEEL)
-            .build();
+        .add(Ability.DANCE)
+        .add(Ability.CLEAR_BLUE_SKY)
+        .add(Ability.RAGING_SUN)
+        .add(Ability.BURNING_BONES_SUMMER_SUN)
+        .add(Ability.SETTING_SUN_TRANSFORMATION)
+        .add(Ability.SOLAR_HEAT_HAZE)
+        .add(Ability.BENEFICENT_RADIANCE)
+        .add(Ability.SUNFLOWER_THRUST)
+        .add(Ability.SUN_HALO_DRAGON_HEAD_DANCE)
+        .add(Ability.FIRE_WHEEL)
+        .build();
 
     private int index = 0;
 

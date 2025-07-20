@@ -5,6 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
 public class LinearValue {
+
     public static final LinearValue ZERO = new LinearValue(0, 0, 0, 0);
 
     private final double base;
@@ -19,8 +20,8 @@ public class LinearValue {
     /**
      * A number formula which depends on the entity level.
      * <p>
-     * It can be used to handle skill modifiers so that the ability gets better with the
-     * skill level, or as an attribute value to make them scale with the class level.
+     * It can be used to handle skill modifiers so that the ability gets better with the skill level, or as an attribute value to make them
+     * scale with the class level.
      *
      * @param base     The base value.
      * @param perLevel The value increment per level.
@@ -37,8 +38,8 @@ public class LinearValue {
     /**
      * A number formula which depends on the entity level.
      * <p>
-     * It can be used to handle skill modifiers so that the ability gets better with the
-     * skill level, or as an attribute value to make them scale with the class level.
+     * It can be used to handle skill modifiers so that the ability gets better with the skill level, or as an attribute value to make them
+     * scale with the class level.
      *
      * @param base     The base value.
      * @param perLevel The value increment per level.
@@ -103,8 +104,12 @@ public class LinearValue {
     public double calculate(int level) {
         double value = this.base + this.perLevel * (level - 1);
 
-        if (this.hasMin) value = Math.max(this.min, value);
-        if (this.hasMax) value = Math.min(this.max, value);
+        if (this.hasMin) {
+            value = Math.max(this.min, value);
+        }
+        if (this.hasMax) {
+            value = Math.min(this.max, value);
+        }
         return value;
     }
 }

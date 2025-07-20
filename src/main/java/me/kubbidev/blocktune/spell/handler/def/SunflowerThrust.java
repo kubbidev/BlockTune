@@ -3,7 +3,7 @@ package me.kubbidev.blocktune.spell.handler.def;
 import me.kubbidev.blocktune.UtilityMethod;
 import me.kubbidev.blocktune.spell.handler.SpellRunnable;
 import me.kubbidev.spellcaster.damage.DamageType;
-import me.kubbidev.spellcaster.damage.Element;
+import me.kubbidev.spellcaster.element.Element;
 import me.kubbidev.spellcaster.spell.SpellMetadata;
 import me.kubbidev.spellcaster.spell.handler.SpellHandler;
 import me.kubbidev.spellcaster.spell.result.def.SimpleSpellResult;
@@ -37,7 +37,7 @@ public class SunflowerThrust extends SpellHandler<SimpleSpellResult> {
         Vector towardDirection = caster.getEyeLocation().getDirection().multiply(2.5);
         new SpellRunnable() {
             Location location = null;
-            double t = 0.0;
+            double   t        = 0.0;
 
             @Override
             public boolean shouldCancel() {
@@ -62,18 +62,18 @@ public class SunflowerThrust extends SpellHandler<SimpleSpellResult> {
                         double y = Math.sin(i + t) * 3.0;
 
                         Vector rotated = new Vector(x, y, 0)
-                                .rotateAroundX(Math.toRadians(location.getPitch()))
-                                .rotateAroundY(Math.toRadians(-location.getYaw()));
+                            .rotateAroundX(Math.toRadians(location.getPitch()))
+                            .rotateAroundY(Math.toRadians(-location.getYaw()));
 
                         Location displayLoc = location.clone().add(towardDirection).subtract(rotated);
                         Particle.DUST.builder().location(displayLoc).color(Color.RED, 2.f)
-                                .count(2).offset(0.2, 0.2, 0.2).spawn();
+                            .count(2).offset(0.2, 0.2, 0.2).spawn();
 
                         Particle.FLAME.builder().location(displayLoc)
-                                .count(10).offset(0.2, 0.2, 0.2).extra(0.1).spawn();
+                            .count(10).offset(0.2, 0.2, 0.2).extra(0.1).spawn();
 
                         Particle.INSTANT_EFFECT.builder().location(displayLoc)
-                                .count(4).offset(0.2, 0.2, 0.2).spawn();
+                            .count(4).offset(0.2, 0.2, 0.2).spawn();
                     }
                 }
 
@@ -85,19 +85,19 @@ public class SunflowerThrust extends SpellHandler<SimpleSpellResult> {
                     for (int i = 0; i < 7; i++) {
                         defaultLocation.add(increment);
                         UtilityMethod.attack(meta, defaultLocation,
-                                damage,
-                                radius,
-                                knockback,
-                                repulsion, false, Element.FIRE,
-                                DamageType.MAGIC,
-                                DamageType.SPELL
+                            damage,
+                            radius,
+                            knockback,
+                            repulsion, false, Element.FIRE,
+                            DamageType.MAGIC,
+                            DamageType.SPELL
                         );
 
                         Particle.FLAME.builder().location(defaultLocation)
-                                .count(20).offset(0.2, 0.2, 0.2).extra(0.0).spawn();
+                            .count(20).offset(0.2, 0.2, 0.2).extra(0.0).spawn();
 
                         Particle.INSTANT_EFFECT.builder().location(defaultLocation)
-                                .count(5).offset(0.2, 0.2, 0.2).spawn();
+                            .count(5).offset(0.2, 0.2, 0.2).spawn();
                     }
                 }
             }
@@ -109,10 +109,10 @@ public class SunflowerThrust extends SpellHandler<SimpleSpellResult> {
 
                 Location displayLoc = location.clone().add(towardDirection);
                 Particle.FLAME.builder().location(displayLoc)
-                        .count(20).offset(0.2, 0.2, 0.2).extra(0.0).spawn();
+                    .count(20).offset(0.2, 0.2, 0.2).extra(0.0).spawn();
 
                 Particle.INSTANT_EFFECT.builder().location(displayLoc)
-                        .count(5).offset(0.2, 0.2, 0.2).spawn();
+                    .count(5).offset(0.2, 0.2, 0.2).spawn();
             }
 
             @Override

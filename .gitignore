@@ -1,12 +1,12 @@
-# Personal files
-TODO
-
 ### Java template
 # Compiled class file
 *.class
 
 # Log file
 *.log
+*.pid
+*.swp
+*.swo
 
 # Package Files #
 *.jar
@@ -16,6 +16,10 @@ TODO
 *.zip
 *.tar.gz
 *.rar
+
+# Local environment files
+.env
+.env.*
 
 ### Gradle template
 **/.gradle

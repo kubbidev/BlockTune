@@ -6,6 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
 public interface PlaceholderParser {
+
     MiniMessage MINI_MESSAGE = buildMiniMessage();
 
     @NotNull

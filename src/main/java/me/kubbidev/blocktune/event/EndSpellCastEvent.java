@@ -6,6 +6,7 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 public class EndSpellCastEvent extends SpellEvent {
+
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
     public static HandlerList getHandlerList() {

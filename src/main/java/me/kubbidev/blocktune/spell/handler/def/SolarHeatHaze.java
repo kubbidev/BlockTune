@@ -3,7 +3,7 @@ package me.kubbidev.blocktune.spell.handler.def;
 import me.kubbidev.blocktune.UtilityMethod;
 import me.kubbidev.blocktune.spell.handler.SpellRunnable;
 import me.kubbidev.spellcaster.damage.DamageType;
-import me.kubbidev.spellcaster.damage.Element;
+import me.kubbidev.spellcaster.element.Element;
 import me.kubbidev.spellcaster.spell.SpellMetadata;
 import me.kubbidev.spellcaster.spell.handler.SpellHandler;
 import me.kubbidev.spellcaster.spell.result.def.SimpleSpellResult;
@@ -17,6 +17,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Experimental
 public class SolarHeatHaze extends SpellHandler<SimpleSpellResult> {
+
     private static final double OFFSET = Math.PI / 8.0;
 
     @Override
@@ -34,7 +35,7 @@ public class SolarHeatHaze extends SpellHandler<SimpleSpellResult> {
         double knockback = meta.parameter("knockback");
         double repulsion = meta.parameter("repulsion");
         new SpellRunnable() {
-            int t = 0;
+            int    t     = 0;
             double theta = 0;
 
             @Override
@@ -52,34 +53,34 @@ public class SolarHeatHaze extends SpellHandler<SimpleSpellResult> {
                         double z = Math.cos(i + theta + OFFSET) * layerRadius;
 
                         Vector rotated = new Vector(0, y, -z)
-                                .rotateAroundZ(Math.PI / 5.0)
-                                .rotateAroundX(Math.toRadians(caster.getLocation().getPitch()))
-                                .rotateAroundY(Math.toRadians(-caster.getLocation().getYaw()));
+                            .rotateAroundZ(Math.PI / 5.0)
+                            .rotateAroundX(Math.toRadians(caster.getLocation().getPitch()))
+                            .rotateAroundY(Math.toRadians(-caster.getLocation().getYaw()));
 
                         Location displayLoc = caster.getLocation().add(rotated);
                         UtilityMethod.attack(meta, displayLoc,
-                                damage,
-                                radius,
-                                knockback,
-                                repulsion, false, Element.FIRE,
-                                DamageType.MAGIC,
-                                DamageType.SPELL
+                            damage,
+                            radius,
+                            knockback,
+                            repulsion, false, Element.FIRE,
+                            DamageType.MAGIC,
+                            DamageType.SPELL
                         );
 
                         if (theta < Math.PI / 2) {
                             Particle.SOUL_FIRE_FLAME.builder().location(displayLoc)
-                                    .count(4).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
+                                .count(4).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
 
                             Particle.INSTANT_EFFECT.builder().location(displayLoc)
-                                    .count(4).offset(0.2, 0.2, 0.2).extra(0.02).spawn();
+                                .count(4).offset(0.2, 0.2, 0.2).extra(0.02).spawn();
                         } else {
                             Particle.FLAME.builder().location(displayLoc)
-                                    .count(4).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
+                                .count(4).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
                         }
                         Particle.DUST.builder().location(displayLoc).color(Color.fromRGB(
-                                        UtilityMethod.clampColorToRange(0.3 + t / 120.0), UtilityMethod.clampColorToRange(0.3),
-                                        UtilityMethod.clampColorToRange(1.0 - t / 120.0)), 2.f)
-                                .count(4).offset(0.25, 0.25, 0.25).spawn();
+                                UtilityMethod.clampColorToRange(0.3 + t / 120.0), UtilityMethod.clampColorToRange(0.3),
+                                UtilityMethod.clampColorToRange(1.0 - t / 120.0)), 2.f)
+                            .count(4).offset(0.25, 0.25, 0.25).spawn();
                     }
                     t += 5;
                 }

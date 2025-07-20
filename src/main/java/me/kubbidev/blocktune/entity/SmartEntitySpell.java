@@ -5,13 +5,15 @@ import me.kubbidev.spellcaster.SpellCasterProvider;
 import me.kubbidev.spellcaster.spell.Spell;
 import me.kubbidev.spellcaster.spell.SpellMetadata;
 import me.kubbidev.spellcaster.spell.handler.SpellHandler;
+import me.kubbidev.spellcaster.spell.trigger.TriggerType;
 import org.jetbrains.annotations.NotNull;
 
 public final class SmartEntitySpell extends Spell {
+
     private final Ability ability;
 
     public SmartEntitySpell(@NotNull Ability ability) {
-        super(SpellCasterProvider.get());
+        super(SpellCasterProvider.get(), TriggerType.API);
         this.ability = ability;
     }
 

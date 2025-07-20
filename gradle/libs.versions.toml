@@ -1,5 +1,0 @@
-[versions]
-shadow = "8.1.1"
-
-[plugins]
-shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }

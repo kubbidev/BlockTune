@@ -3,7 +3,7 @@ package me.kubbidev.blocktune.spell.handler.def;
 import me.kubbidev.blocktune.UtilityMethod;
 import me.kubbidev.blocktune.spell.handler.SpellRunnable;
 import me.kubbidev.spellcaster.damage.DamageType;
-import me.kubbidev.spellcaster.damage.Element;
+import me.kubbidev.spellcaster.element.Element;
 import me.kubbidev.spellcaster.spell.SpellMetadata;
 import me.kubbidev.spellcaster.spell.handler.SpellHandler;
 import me.kubbidev.spellcaster.spell.result.def.SimpleSpellResult;
@@ -52,26 +52,26 @@ public class SunHaloDragonHeadDance extends SpellHandler<SimpleSpellResult> {
                     double z = 0;
 
                     Vector rotated = new Vector(x, y, z)
-                            .rotateAroundY(Math.toRadians(-caster.getYaw()));
+                        .rotateAroundY(Math.toRadians(-caster.getYaw()));
 
                     Location displayLoc = caster.getLocation().clone().add(rotated);
                     UtilityMethod.attack(meta, displayLoc,
-                            damage,
-                            radius,
-                            knockback,
-                            repulsion, true, Element.FIRE,
-                            DamageType.MAGIC,
-                            DamageType.SPELL
+                        damage,
+                        radius,
+                        knockback,
+                        repulsion, true, Element.FIRE,
+                        DamageType.MAGIC,
+                        DamageType.SPELL
                     );
 
                     Particle.DUST.builder().location(displayLoc).color(Color.RED, 2.f)
-                            .count(2).offset(0.25, 0.25, 0.25).spawn();
+                        .count(2).offset(0.25, 0.25, 0.25).spawn();
 
                     Particle.FLAME.builder().location(displayLoc)
-                            .count(4).offset(0.5, 0.5, 0.5).extra(0.1).spawn();
+                        .count(4).offset(0.5, 0.5, 0.5).extra(0.1).spawn();
 
                     Particle.INSTANT_EFFECT.builder().location(displayLoc)
-                            .count(2).offset(0.5, 0.5, 0.5).spawn();
+                        .count(2).offset(0.5, 0.5, 0.5).spawn();
 
                     t2 += 3;
                 }
@@ -88,7 +88,7 @@ public class SunHaloDragonHeadDance extends SpellHandler<SimpleSpellResult> {
                 caster.getWorld().playSound(caster, Sound.ENTITY_ENDER_DRAGON_GROWL, 0.5f, 1.f);
 
                 Particle.EXPLOSION.builder().location(caster.getLocation())
-                        .count(2).offset(0.5, 0.5, 0.5).extra(2.0).spawn();
+                    .count(2).offset(0.5, 0.5, 0.5).extra(2.0).spawn();
 
                 Particle.FLASH.builder().location(caster.getLocation()).spawn();
             }

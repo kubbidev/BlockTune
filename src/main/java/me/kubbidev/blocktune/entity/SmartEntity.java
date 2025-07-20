@@ -28,15 +28,16 @@ import org.jetbrains.annotations.Nullable;
 @ApiStatus.Experimental
 @ApiStatus.Internal
 public abstract class SmartEntity extends Zombie {
+
     static {
         // todo rework this shit
         Events.subscribe(EndSpellCastEvent.class)
-                .handler(e -> {
-                    LivingEntity entity = ((CraftLivingEntity) e.getEntity()).getHandle();
-                    if (entity instanceof SmartEntity) {
-                        ((SmartEntity) entity).m = 0;
-                    }
-                });
+            .handler(e -> {
+                LivingEntity entity = ((CraftLivingEntity) e.getEntity()).getHandle();
+                if (entity instanceof SmartEntity) {
+                    ((SmartEntity) entity).m = 0;
+                }
+            });
     }
 
     protected final BlockTune plugin;
@@ -48,9 +49,9 @@ public abstract class SmartEntity extends Zombie {
         super(EntityType.ZOMBIE, ((CraftWorld) location.getWorld()).getHandle());
         this.plugin = plugin;
         setPos(
-                location.getX(),
-                location.getY(),
-                location.getZ()
+            location.getX(),
+            location.getY(),
+            location.getZ()
         );
         setShouldBurnInDay(false);
         setPersistenceRequired();
@@ -82,12 +83,12 @@ public abstract class SmartEntity extends Zombie {
     protected abstract void registerGoals();
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource source) {
+    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
         return SoundEvents.GENERIC_HURT;
     }
 
     @Override
-    public SoundEvent getDeathSound() {
+    public @NotNull SoundEvent getDeathSound() {
         return SoundEvents.GENERIC_DEATH;
     }
 
@@ -97,35 +98,37 @@ public abstract class SmartEntity extends Zombie {
         if (!isAlive()) {
             return;
         }
-        if (!hasEffect(MobEffects.MOVEMENT_SPEED)) {
-            addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, -1, 0, false, false));
+        if (!hasEffect(MobEffects.SPEED)) {
+            addEffect(new MobEffectInstance(MobEffects.SPEED, -1, 0, false, false));
         }
 
         @Nullable LivingEntity target = getTarget();
         if (target != null && target.distanceToSqr(this) > (18 * 18) && this.m == 0) {
             int level = 0;
 
-            MobEffectInstance instance = getEffect(MobEffects.DAMAGE_BOOST);
+            MobEffectInstance instance = getEffect(MobEffects.STRENGTH);
             if (instance != null) {
                 level = (int) (instance.getAmplifier() / 3.0);
             }
 
             addEffect(new MobEffectInstance(
-                    MobEffects.MOVEMENT_SPEED, 10, level, false, false
+                MobEffects.SPEED, 10, level, false, false
             ));
             addEffect(new MobEffectInstance(
-                    MobEffects.JUMP, 20, level, false, false
+                MobEffects.JUMP_BOOST, 20, level, false, false
             ));
         }
     }
 
     public static class AttributeMap {
+
         private final ImmutableMap.Builder<Holder<Attribute>, Double> builder = ImmutableMap.builder();
-        private boolean instanceFrozen;
+        private       boolean                                         instanceFrozen;
 
         private AttributeMap create(Holder<Attribute> attribute, double baseValue) {
             if (this.instanceFrozen) {
-                throw new UnsupportedOperationException("Tried to change value for default attribute instance: " + attribute.getRegisteredName());
+                throw new UnsupportedOperationException(
+                    "Tried to change value for default attribute instance: " + attribute.getRegisteredName());
             }
             this.builder.put(attribute, baseValue);
             return this;

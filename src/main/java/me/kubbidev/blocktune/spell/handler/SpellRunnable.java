@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class SpellRunnable implements Runnable {
+
     private BukkitTask task;
 
     // the spell meta used to init this runnable
@@ -60,8 +61,7 @@ public abstract class SpellRunnable implements Runnable {
     }
 
     /**
-     * Schedules this to repeatedly run until cancelled, starting after the
-     * specified number of server ticks.
+     * Schedules this to repeatedly run until cancelled, starting after the specified number of server ticks.
      *
      * @param meta the reference to the spell scheduling task
      * @return a BukkitTask that contains the id number
@@ -75,8 +75,7 @@ public abstract class SpellRunnable implements Runnable {
     }
 
     /**
-     * Schedules this to repeatedly run until cancelled, starting after the
-     * specified number of server ticks.
+     * Schedules this to repeatedly run until cancelled, starting after the specified number of server ticks.
      *
      * @param meta   the reference to the spell scheduling task
      * @param delay  the ticks to wait before running the task
@@ -86,7 +85,8 @@ public abstract class SpellRunnable implements Runnable {
      * @throws IllegalStateException    if this was already scheduled
      */
     @NotNull
-    public synchronized BukkitTask runTask(@NotNull SpellMetadata meta, long delay, long period) throws IllegalArgumentException, IllegalStateException {
+    public synchronized BukkitTask runTask(@NotNull SpellMetadata meta, long delay, long period)
+        throws IllegalArgumentException, IllegalStateException {
         checkNotYetScheduled();
         // attach this metadata as casting in the entity metadata map instance
         SpellMetadataProvider.onCastStart(meta);

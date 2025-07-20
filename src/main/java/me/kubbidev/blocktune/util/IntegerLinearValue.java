@@ -13,6 +13,7 @@ public class IntegerLinearValue extends LinearValue {
     public IntegerLinearValue(double base, double perLevel, double min, double max) {
         super(base, perLevel, min, max);
     }
+
     public IntegerLinearValue(@NotNull IntegerLinearValue value) {
         super(value);
     }

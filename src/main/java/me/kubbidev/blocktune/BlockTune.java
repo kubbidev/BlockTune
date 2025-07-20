@@ -2,7 +2,6 @@ package me.kubbidev.blocktune;
 
 import me.kubbidev.blocktune.commands.*;
 import me.kubbidev.blocktune.config.ConfigKeys;
-import me.kubbidev.blocktune.manager.SpellManager;
 import me.kubbidev.blocktune.spell.listener.AttackActionListener;
 import me.kubbidev.blocktune.scoreboard.ScoreboardManager;
 import me.kubbidev.blocktune.placeholder.DefaultPlaceholderParser;
@@ -15,6 +14,7 @@ import me.kubbidev.nexuspowered.util.Players;
 import org.jetbrains.annotations.NotNull;
 
 public final class BlockTune extends ExtendedJavaPlugin {
+
     // init during enable
     private KeyedConfiguration configuration;
 
@@ -22,10 +22,6 @@ public final class BlockTune extends ExtendedJavaPlugin {
     private ScoreboardManager scoreboardManager;
 
     private AttackActionListener actionListener;
-
-    // gameplay features
-    // todo implement reload method for spell manager
-    private SpellManager spellManager;
 
     @Override
     public void load() {
@@ -50,9 +46,6 @@ public final class BlockTune extends ExtendedJavaPlugin {
 
         this.actionListener = new AttackActionListener(this);
         this.actionListener.onEnable();
-
-        this.spellManager = new SpellManager(this);
-        this.spellManager.load(false);
 
         // register listeners
         registerPlatformListeners();
@@ -82,8 +75,6 @@ public final class BlockTune extends ExtendedJavaPlugin {
 
     public void reloadPlugin() {
         this.configuration.reload();
-        // reload spells after the configuration reload itself
-        this.spellManager.load(true);
     }
 
     private void registerPlatformListeners() {
@@ -115,9 +106,5 @@ public final class BlockTune extends ExtendedJavaPlugin {
 
     public @NotNull AttackActionListener getActionListener() {
         return this.actionListener;
-    }
-
-    public @NotNull SpellManager getSpellManager() {
-        return this.spellManager;
     }
 }

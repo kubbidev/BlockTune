@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class Scoreboard implements TerminableConsumer {
+
     private static final String[] SCOREBOARD_LINES;
 
     // the backing terminable registry
@@ -27,7 +28,7 @@ public class Scoreboard implements TerminableConsumer {
 
     private final org.bukkit.scoreboard.Scoreboard scoreboard;
 
-    private final Player player;
+    private final Player          player;
     private final List<Component> currentLines = new ArrayList<>();
 
     private Objective objective;

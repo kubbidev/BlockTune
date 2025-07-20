@@ -26,7 +26,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @ApiStatus.Experimental
 public class AttackActionListener implements Listener {
-    private final BlockTune plugin;
+
+    private final BlockTune              plugin;
     private final Map<UUID, SpellPlayer> connectedPlayers = new ConcurrentHashMap<>();
 
     public AttackActionListener(BlockTune plugin) {
@@ -72,10 +73,10 @@ public class AttackActionListener implements Listener {
         Player player = e.getPlayer();
 
         if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
-                && e.getMaterial() == Material.IRON_SWORD
-                && e.getHand() == EquipmentSlot.HAND
-                // avoid spectators to cast spells (bug when they can click on a block)
-                && player.getGameMode() != GameMode.SPECTATOR) {
+            && e.getMaterial() == Material.IRON_SWORD
+            && e.getHand() == EquipmentSlot.HAND
+            // avoid spectators to cast spells (bug when they can click on a block)
+            && player.getGameMode() != GameMode.SPECTATOR) {
             e.setCancelled(true);
         } else {
             return;
@@ -112,8 +113,8 @@ public class AttackActionListener implements Listener {
             // if it's true, subtracts one from the index and adds the size of the task list to handle negative indices before applying modulo,
             // otherwise, simply increments the index and applies modulo to wrap around the list size if needed.
             spellPlayer.setIndex(player.isSneaking()
-                    ? (spellPlayer.getIndex() - 1 + unlockedSpells.size()) % unlockedSpells.size()
-                    : (spellPlayer.getIndex() + 1) % unlockedSpells.size());
+                ? (spellPlayer.getIndex() - 1 + unlockedSpells.size()) % unlockedSpells.size()
+                : (spellPlayer.getIndex() + 1) % unlockedSpells.size());
         }
     }
 }

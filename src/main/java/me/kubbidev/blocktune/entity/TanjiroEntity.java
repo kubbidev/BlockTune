@@ -25,11 +25,12 @@ import java.util.Random;
 @ApiStatus.Experimental
 @ApiStatus.Internal
 public final class TanjiroEntity extends SmartEntity {
-    private final Random random = new Random();
+
+    private final Random random      = new Random();
     // default values
-    private int attackSpeed = 60;
-    private int attackLimit = 50;
-    private int breathSpeed = 40;
+    private       int    attackSpeed = 60;
+    private       int    attackLimit = 50;
+    private       int    breathSpeed = 40;
 
     public TanjiroEntity(BlockTune plugin, Location location) {
         super(plugin, location);
@@ -54,13 +55,13 @@ public final class TanjiroEntity extends SmartEntity {
     @Override
     public @NotNull AttributeMap createAdditionalAttributes() {
         return new AttributeMap()
-                .add(Attributes.FOLLOW_RANGE, 64.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.33)
-                .add(Attributes.MAX_HEALTH, 120.0)
-                .add(Attributes.ATTACK_KNOCKBACK, 1.5)
-                .add(Attributes.ATTACK_DAMAGE, 1.0)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.3)
-                .add(Attributes.ARMOR, 10.0);
+            .add(Attributes.FOLLOW_RANGE, 64.0)
+            .add(Attributes.MOVEMENT_SPEED, 0.33)
+            .add(Attributes.MAX_HEALTH, 120.0)
+            .add(Attributes.ATTACK_KNOCKBACK, 1.5)
+            .add(Attributes.ATTACK_DAMAGE, 1.0)
+            .add(Attributes.KNOCKBACK_RESISTANCE, 0.3)
+            .add(Attributes.ARMOR, 10.0);
     }
 
     /**

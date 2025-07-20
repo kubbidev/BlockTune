@@ -3,7 +3,7 @@ package me.kubbidev.blocktune.spell.handler.def;
 import me.kubbidev.blocktune.UtilityMethod;
 import me.kubbidev.blocktune.spell.handler.SpellRunnable;
 import me.kubbidev.spellcaster.damage.DamageType;
-import me.kubbidev.spellcaster.damage.Element;
+import me.kubbidev.spellcaster.element.Element;
 import me.kubbidev.spellcaster.spell.SpellMetadata;
 import me.kubbidev.spellcaster.spell.handler.SpellHandler;
 import me.kubbidev.spellcaster.spell.result.def.SimpleSpellResult;
@@ -14,6 +14,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Experimental
 public class ClearBlueSky extends SpellHandler<SimpleSpellResult> {
+
     private static final double X_AXIS_ROTATION = -22.5;
 
     @Override
@@ -32,8 +33,8 @@ public class ClearBlueSky extends SpellHandler<SimpleSpellResult> {
         double repulsion = meta.parameter("repulsion");
         new SpellRunnable() {
             Location location = null;
-            int t1 = 0;
-            int t2 = 0;
+            int      t1       = 0;
+            int      t2       = 0;
 
             double theta = 0.0;
 
@@ -61,16 +62,16 @@ public class ClearBlueSky extends SpellHandler<SimpleSpellResult> {
                             double y = Math.sin(i) * layerRadius;
 
                             Vector rotated = new Vector(x, y, 0.0)
-                                    .rotateAroundX(Math.toRadians(X_AXIS_ROTATION))
-                                    .rotateAroundY(Math.toRadians(-location.getYaw()));
+                                .rotateAroundX(Math.toRadians(X_AXIS_ROTATION))
+                                .rotateAroundY(Math.toRadians(-location.getYaw()));
 
                             Location displayLoc = location.clone().add(rotated);
 
                             Particle.FLAME.builder().location(displayLoc)
-                                    .count(2).offset(0.1, 0.1, 0.1).extra(0).spawn();
+                                .count(2).offset(0.1, 0.1, 0.1).extra(0).spawn();
 
                             Particle.INSTANT_EFFECT.builder().location(displayLoc)
-                                    .count(2).offset(0.1, 0.1, 0.1).spawn();
+                                .count(2).offset(0.1, 0.1, 0.1).spawn();
 
                             Particle.SWEEP_ATTACK.builder().location(displayLoc).spawn();
                             if (layer == 2) {
@@ -98,27 +99,27 @@ public class ClearBlueSky extends SpellHandler<SimpleSpellResult> {
                             double y = Math.sin(i + this.theta) * layerRadius;
 
                             Vector rotated = new Vector(x, y, 0.0)
-                                    .rotateAroundX(Math.toRadians(X_AXIS_ROTATION))
-                                    .rotateAroundY(Math.toRadians(-location.getYaw()));
+                                .rotateAroundX(Math.toRadians(X_AXIS_ROTATION))
+                                .rotateAroundY(Math.toRadians(-location.getYaw()));
 
                             Location displayLoc = location.clone().add(rotated);
                             UtilityMethod.attack(meta, displayLoc,
-                                    damage,
-                                    radius,
-                                    knockback,
-                                    repulsion, false, Element.FIRE,
-                                    DamageType.MAGIC,
-                                    DamageType.SPELL
+                                damage,
+                                radius,
+                                knockback,
+                                repulsion, false, Element.FIRE,
+                                DamageType.MAGIC,
+                                DamageType.SPELL
                             );
 
                             if (layer == 1 || layer == 2) {
                                 Particle.FLAME.builder().location(displayLoc)
-                                        .count(4).offset(0.2, 0.2, 0.2).extra(0.03).force(true).spawn();
+                                    .count(4).offset(0.2, 0.2, 0.2).extra(0.03).force(true).spawn();
                             }
 
                             if (layer == 0 || layer == 3) {
                                 Particle.DUST.builder().location(displayLoc).color(Color.RED, 2.f)
-                                        .offset(0.1, 0.1, 0.1).spawn();
+                                    .offset(0.1, 0.1, 0.1).spawn();
                             }
                         }
 

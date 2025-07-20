@@ -14,10 +14,10 @@ public final class HealCommand {
     @SuppressWarnings("resource")
     public static void register(@NotNull BlockTune plugin) {
         Commands.create().assertOp().assertPlayer()
-                .handler(context -> {
-                    Player player = context.sender();
-                    heal(player, getAttributeValue(player, Attribute.GENERIC_MAX_HEALTH));
-                })
-                .registerAndBind(plugin, "heal");
+            .handler(context -> {
+                Player player = context.sender();
+                heal(player, getAttributeValue(player, Attribute.MAX_HEALTH));
+            })
+            .registerAndBind(plugin, "heal");
     }
 }

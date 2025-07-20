@@ -7,10 +7,10 @@ main: me.kubbidev.blocktune.BlockTune
 load: STARTUP
 
 # Depend on NexusPowered and SpellCaster common library
-depend: [NexusPowered, SpellCaster]
+depend: [ NexusPowered, SpellCaster ]
 
 # Soft depend on the placeholder api to translate texts
-softdepend: [PlaceholderAPI]
+softdepend: [ PlaceholderAPI ]
 
 # Mark the plugin as 1.13 compatible to avoid CB having to perform quite as much unnecessary
 # remapping when the plugin is loaded.

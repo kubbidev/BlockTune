@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 public class Placeholders implements BiFunction<OfflinePlayer, String, Component> {
-    private final BlockTune plugin;
+
+    private final BlockTune           plugin;
     private final Map<String, String> placeholders = new HashMap<>();
 
     public Placeholders(@NotNull BlockTune plugin) {

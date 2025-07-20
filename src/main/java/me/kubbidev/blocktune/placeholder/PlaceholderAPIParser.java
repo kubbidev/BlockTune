@@ -6,6 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
 public final class PlaceholderAPIParser implements PlaceholderParser {
+
     public static final PlaceholderParser INSTANCE = new PlaceholderAPIParser();
 
     private PlaceholderAPIParser() {

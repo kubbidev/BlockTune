@@ -3,7 +3,7 @@ package me.kubbidev.blocktune.spell.handler.def;
 import me.kubbidev.blocktune.UtilityMethod;
 import me.kubbidev.blocktune.spell.handler.SpellRunnable;
 import me.kubbidev.spellcaster.damage.DamageType;
-import me.kubbidev.spellcaster.damage.Element;
+import me.kubbidev.spellcaster.element.Element;
 import me.kubbidev.spellcaster.spell.SpellMetadata;
 import me.kubbidev.spellcaster.spell.handler.SpellHandler;
 import me.kubbidev.spellcaster.spell.result.def.SimpleSpellResult;
@@ -41,8 +41,12 @@ public class RagingSun extends SpellHandler<SimpleSpellResult> {
 
             @Override
             protected void tick() {
-                if (t == 1) spawnCircularSlash(45.f, 67.5f);
-                if (t == 6) spawnCircularSlash(-45.f, -67.5f);
+                if (t == 1) {
+                    spawnCircularSlash(45.f, 67.5f);
+                }
+                if (t == 6) {
+                    spawnCircularSlash(-45.f, -67.5f);
+                }
             }
 
             @Override
@@ -81,30 +85,30 @@ public class RagingSun extends SpellHandler<SimpleSpellResult> {
                         double z = Math.sin(i) * layerRadius;
 
                         Vector rotated = new Vector(x, 1.0, z)
-                                .rotateAroundY(Math.toRadians(-caster.getYaw() + yawAngle));
+                            .rotateAroundY(Math.toRadians(-caster.getYaw() + yawAngle));
 
                         Location displayLoc = offsetLocation.clone().add(rotated);
                         UtilityMethod.attack(meta, displayLoc,
-                                damage,
-                                radius,
-                                knockback,
-                                repulsion, false, Element.FIRE,
-                                DamageType.MAGIC,
-                                DamageType.SPELL
+                            damage,
+                            radius,
+                            knockback,
+                            repulsion, false, Element.FIRE,
+                            DamageType.MAGIC,
+                            DamageType.SPELL
                         );
 
                         if (layer == 0) {
                             Particle.INSTANT_EFFECT.builder().location(displayLoc)
-                                    .count(8).offset(0.1, 0.1, 0.1).spawn();
+                                .count(8).offset(0.1, 0.1, 0.1).spawn();
                         } else {
                             Particle.FLAME.builder().location(displayLoc)
-                                    .count(4).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
+                                .count(4).offset(0.2, 0.2, 0.2).extra(0.05).spawn();
 
                             Particle.SWEEP_ATTACK.builder().location(displayLoc)
-                                    .offset(0.2, 0.05, 0.2).spawn();
+                                .offset(0.2, 0.05, 0.2).spawn();
 
                             Particle.INSTANT_EFFECT.builder().location(displayLoc)
-                                    .offset(0.2, 0.5, 0.2).spawn();
+                                .offset(0.2, 0.5, 0.2).spawn();
                         }
                     }
 

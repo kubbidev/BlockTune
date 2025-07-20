@@ -3,7 +3,7 @@ package me.kubbidev.blocktune.spell.handler.def;
 import me.kubbidev.blocktune.UtilityMethod;
 import me.kubbidev.blocktune.spell.handler.SpellRunnable;
 import me.kubbidev.spellcaster.damage.DamageType;
-import me.kubbidev.spellcaster.damage.Element;
+import me.kubbidev.spellcaster.element.Element;
 import me.kubbidev.spellcaster.spell.SpellMetadata;
 import me.kubbidev.spellcaster.spell.handler.SpellHandler;
 import me.kubbidev.spellcaster.spell.result.def.SimpleSpellResult;
@@ -56,30 +56,30 @@ public class BurningBonesSummerSun extends SpellHandler<SimpleSpellResult> {
                     double z = t / 4;
 
                     Vector rotated = new Vector(x, y, z)
-                            .rotateAroundX(Math.toRadians(location.getPitch()))
-                            .rotateAroundY(Math.toRadians(-location.getYaw()));
+                        .rotateAroundX(Math.toRadians(location.getPitch()))
+                        .rotateAroundY(Math.toRadians(-location.getYaw()));
 
                     Location displayLoc = location.clone().add(rotated);
                     UtilityMethod.attack(meta, displayLoc,
-                            damage,
-                            radius,
-                            knockback,
-                            repulsion, false, Element.FIRE,
-                            DamageType.MAGIC,
-                            DamageType.SPELL
+                        damage,
+                        radius,
+                        knockback,
+                        repulsion, false, Element.FIRE,
+                        DamageType.MAGIC,
+                        DamageType.SPELL
                     );
 
                     Particle.DUST.builder().location(displayLoc).color(Color.RED, 2.f)
-                            .offset(0.1, 0.1, 0.1).spawn();
+                        .offset(0.1, 0.1, 0.1).spawn();
 
                     Particle.FLAME.builder().location(displayLoc)
-                            .count(4).offset(0.2, 0.2, 0.2).extra(0.1).spawn();
+                        .count(4).offset(0.2, 0.2, 0.2).extra(0.1).spawn();
 
                     Particle.SWEEP_ATTACK.builder().location(displayLoc)
-                            .extra(0.01).spawn();
+                        .extra(0.01).spawn();
 
                     Particle.INSTANT_EFFECT.builder().location(displayLoc)
-                            .count(2).offset(0.5, 0.5, 0.5).spawn();
+                        .count(2).offset(0.5, 0.5, 0.5).spawn();
                 }
             }
 

@@ -3,8 +3,9 @@ package me.kubbidev.blocktune.scoreboard;
 import org.jetbrains.annotations.NotNull;
 
 public class ScoreboardAnimation<T> {
+
     private final T[] frames;
-    private int currentFrame;
+    private       int currentFrame;
 
     private boolean looping;
     private boolean backAndForth;

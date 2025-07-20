@@ -13,26 +13,26 @@ public final class SpawnCommand {
     @SuppressWarnings("resource")
     public static void register(@NotNull BlockTune plugin) {
         Commands.create()
-                .assertPlayer()
-                .handler(context -> {
-                    Argument argumentAmount = context.arg(0);
-                    int amount = 1;
-                    if (argumentAmount.isPresent()) {
-                        amount = argumentAmount.parseOrFail(Integer.class);
-                    }
+            .assertPlayer()
+            .handler(context -> {
+                Argument argumentAmount = context.arg(0);
+                int amount = 1;
+                if (argumentAmount.isPresent()) {
+                    amount = argumentAmount.parseOrFail(Integer.class);
+                }
 
-                    Argument argumentAttackSpeed = context.arg(1);
-                    int attackSpeed = new Random().nextInt(10, 61);
-                    if (argumentAttackSpeed.isPresent()) {
-                        attackSpeed = argumentAttackSpeed.parseOrFail(Integer.class);
-                    }
+                Argument argumentAttackSpeed = context.arg(1);
+                int attackSpeed = new Random().nextInt(10, 61);
+                if (argumentAttackSpeed.isPresent()) {
+                    attackSpeed = argumentAttackSpeed.parseOrFail(Integer.class);
+                }
 
-                    for (int i = 0; i < amount; i++) {
-                        TanjiroEntity entity = new TanjiroEntity(plugin, context.sender().getLocation());
-                        entity.setAttackSpeed(attackSpeed);
-                        entity.spawn();
-                    }
-                })
-                .registerAndBind(plugin, "spawn");
+                for (int i = 0; i < amount; i++) {
+                    TanjiroEntity entity = new TanjiroEntity(plugin, context.sender().getLocation());
+                    entity.setAttackSpeed(attackSpeed);
+                    entity.spawn();
+                }
+            })
+            .registerAndBind(plugin, "spawn");
     }
 }

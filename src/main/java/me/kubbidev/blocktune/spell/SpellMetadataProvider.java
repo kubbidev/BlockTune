@@ -13,6 +13,7 @@ import java.util.List;
 @ApiStatus.Experimental
 @ApiStatus.Internal
 public final class SpellMetadataProvider {
+
     private SpellMetadataProvider() {
     }
 

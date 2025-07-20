@@ -14,7 +14,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ScoreboardManager implements Listener {
-    private final BlockTune plugin;
+
+    private final BlockTune          plugin;
     private final ScoreboardTemplate scoreboardTemplate = new ScoreboardTemplate();
 
     // uuid -> player identifier, cache use to keep track of all scoreboard instances running

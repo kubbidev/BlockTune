@@ -8,10 +8,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
 public class UpdateScoreboardTask implements Consumer<Task> {
+
     private final Player player;
 
     private final ScoreboardManager scoreboardManager;
-    private final Scoreboard scoreboard;
+    private final Scoreboard        scoreboard;
 
     // scoreboard type used to evaluate the amount and type of lines to display
     private ScoreboardTemplate.ScoreboardType lastType = ScoreboardTemplate.ScoreboardType.NORMAL;
@@ -55,7 +56,7 @@ public class UpdateScoreboardTask implements Consumer<Task> {
 
         // retrieve the player actual scoreboard type here
         ScoreboardTemplate.ScoreboardType type
-                = ScoreboardTemplate.ScoreboardType.NORMAL;
+            = ScoreboardTemplate.ScoreboardType.NORMAL;
 
         if (this.lastType != type) {
             this.lastType = type;
@@ -67,8 +68,8 @@ public class UpdateScoreboardTask implements Consumer<Task> {
         this.scoreboard.updateTitle(decorate(template.getTitle()));
 
         this.player.sendPlayerListHeaderAndFooter(
-                decorate(template.getHeader()),
-                decorate(template.getFooter())
+            decorate(template.getHeader()),
+            decorate(template.getFooter())
         );
     }
 }

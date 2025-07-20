@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
  * A placeholder that just passes on to {@link me.clip.placeholderapi.PlaceholderAPI} to do all the parsing.
  */
 public final class PlaceholderAPIHook extends PlaceholderExpansion implements Runnable {
+
     public static final PlaceholderAPIHook INSTANCE = new PlaceholderAPIHook();
 
     // cached server address animation currently being animated

@@ -5,7 +5,7 @@ import me.kubbidev.spellcaster.SpellCasterProvider;
 import me.kubbidev.spellcaster.damage.AttackMetadata;
 import me.kubbidev.spellcaster.damage.DamageMetadata;
 import me.kubbidev.spellcaster.damage.DamageType;
-import me.kubbidev.spellcaster.damage.Element;
+import me.kubbidev.spellcaster.element.Element;
 import me.kubbidev.spellcaster.spell.SpellMetadata;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -25,6 +25,7 @@ import static me.kubbidev.spellcaster.InternalMethod.*;
  * A utility class providing various static methods.
  */
 public final class UtilityMethod {
+
     private UtilityMethod() {
     }
 
@@ -79,7 +80,8 @@ public final class UtilityMethod {
         return origin.clone().add(direction.multiply(multiply));
     }
 
-    public static void attack(SpellMetadata meta, Location location, double damage, double radius, double knockback, double repulsion, boolean shouldSwing, @Nullable Element element, DamageType... types) {
+    public static void attack(SpellMetadata meta, Location location, double damage, double radius, double knockback, double repulsion,
+                              boolean shouldSwing, @Nullable Element element, DamageType... types) {
         LivingEntity caster = meta.entity();
         double d;
         double k;
@@ -89,9 +91,9 @@ public final class UtilityMethod {
         damage *= 1.0 + ((double) getPotionAmplifier(caster, PotionEffectType.STRENGTH) / 3);
 
         for (Entity victim : getNearbyChunkEntities(location).stream()
-                .filter(e -> !e.equals(caster))
-                .filter(e -> e.getLocation().distanceSquared(location) <= (radius * radius))
-                .toList()) {
+            .filter(e -> !e.equals(caster))
+            .filter(e -> e.getLocation().distanceSquared(location) <= (radius * radius))
+            .toList()) {
 
             if (canTarget(SpellCasterProvider.get(), caster, victim)) {
                 boolean isBlocking = false;
@@ -129,9 +131,9 @@ public final class UtilityMethod {
                         Location displayLoc = target.getEyeLocation();
                         displayLoc.getWorld().spawnParticle(Particle.FLASH, displayLoc, 0);
                         displayLoc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, displayLoc, 64,
-                                0.5,
-                                0.5,
-                                0.5, 0.5);
+                            0.5,
+                            0.5,
+                            0.5, 0.5);
                     }
                     if (isKnockback) {
                         double[] velocity = getRepulsionVelocity(caster, target);
@@ -189,13 +191,11 @@ public final class UtilityMethod {
     }
 
     /**
-     * Calculates the forward velocity for a given entity.
-     * For {@link Mob}, the forward velocity is directed towards their target.
-     * For other living entities, it is based on their looking direction.
+     * Calculates the forward velocity for a given entity. For {@link Mob}, the forward velocity is directed towards their target. For other
+     * living entities, it is based on their looking direction.
      *
      * @param entity   The entity for which to calculate the forward velocity.
-     * @param usePitch Whether or not the pitch direction for an entity should
-     *                 be take in consideration when ray casting.
+     * @param usePitch Whether or not the pitch direction for an entity should be take in consideration when ray casting.
      * @return A Vector representing the forward velocity.
      */
     public static Vector getForwardVelocity(LivingEntity entity, boolean usePitch) {
@@ -266,9 +266,9 @@ public final class UtilityMethod {
         }
         // ensure for adjacent blocks
         return isSolid(world, x + 1, y, z)
-                || isSolid(world, x - 1, y, z)
-                || isSolid(world, x, y, z + 1)
-                || isSolid(world, x, y, z - 1);
+            || isSolid(world, x - 1, y, z)
+            || isSolid(world, x, y, z + 1)
+            || isSolid(world, x, y, z - 1);
     }
 
     public static boolean isSolid(World world, int x, int y, int z) {
