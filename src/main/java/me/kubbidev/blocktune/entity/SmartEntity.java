@@ -98,24 +98,24 @@ public abstract class SmartEntity extends Zombie {
         if (!isAlive()) {
             return;
         }
-        if (!hasEffect(MobEffects.SPEED)) {
-            addEffect(new MobEffectInstance(MobEffects.SPEED, -1, 0, false, false));
+        if (!hasEffect(MobEffects.MOVEMENT_SPEED)) {
+            addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, -1, 0, false, false));
         }
 
         @Nullable LivingEntity target = getTarget();
         if (target != null && target.distanceToSqr(this) > (18 * 18) && this.m == 0) {
             int level = 0;
 
-            MobEffectInstance instance = getEffect(MobEffects.STRENGTH);
+            MobEffectInstance instance = getEffect(MobEffects.DAMAGE_BOOST);
             if (instance != null) {
                 level = (int) (instance.getAmplifier() / 3.0);
             }
 
             addEffect(new MobEffectInstance(
-                MobEffects.SPEED, 10, level, false, false
+                MobEffects.MOVEMENT_SPEED, 10, level, false, false
             ));
             addEffect(new MobEffectInstance(
-                MobEffects.JUMP_BOOST, 20, level, false, false
+                MobEffects.JUMP, 20, level, false, false
             ));
         }
     }

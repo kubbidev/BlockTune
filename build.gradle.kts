@@ -38,12 +38,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.7-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("me.kubbidev:spellcaster:2.0.0")
     compileOnly("me.kubbidev:nexuspowered:2.0.0")
-
-    paperweight.paperDevBundle("1.21.7-R0.1-SNAPSHOT")
 
     // Unit tests
     testImplementation("org.testcontainers:junit-jupiter:1.20.4")
