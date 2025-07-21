@@ -13,18 +13,3 @@
 # |  option cannot be found.                                                                     | #
 # +----------------------------------------------------------------------------------------------+ #
 ####################################################################################################
-
-# +----------------------------------------------------------------------------------------------+ #
-# |                                                                                              | #
-# |                                    CUSTOMIZATION SETTINGS                                    | #
-# |                                                                                              | #
-# |               Settings that allow admins to customize the way BlockTune operates.            | #
-# |                                                                                              | #
-# +----------------------------------------------------------------------------------------------+ #
-
-# When set to true, passive spells must be bound in order to take effect otherwise, unlocked
-# spells will take effect right away.
-#
-# This is only the default behavior for spells but can be overridden by specifying true/false
-# to the "needs-bound" field in the profess spells section.
-passive-spell-need-bound: true
